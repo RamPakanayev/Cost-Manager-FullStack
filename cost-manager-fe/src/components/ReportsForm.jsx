@@ -1,24 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Report from "./Report";
 
-function ReportsForm({
-  handleGetReport,
-  showReport,
-  report,
-  month,
-  year,
-  setMonth,
-  setYear,
-}) {
+function ReportsForm() {
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+  const [report, setReport] = useState([]);
+  const [showReport, setShowReport] = useState(false);
+
   useEffect(() => {
     const currentDate = new Date();
     setMonth(String(currentDate.getMonth() + 1));
     setYear(String(currentDate.getFullYear()));
-  }, [setMonth, setYear]);
-   
+  }, []);
+
+  const handleGetReport = async () => {
+    try {
+      const response = await fetch(`/report?year=${year}&month=${month}&user_id=123123`);
+      const data = await response.json();
+      console.log("Report data: ", data);
+      setReport(data);
+      setShowReport(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleGetReport();
+  };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h2>Reports</h2>
       <hr />
       <label>
@@ -32,8 +46,8 @@ function ReportsForm({
           max="12"
         />
       </label>
+      <br />
       <label>
-        <br/>
         Year:
         <input
           type="number"
@@ -42,14 +56,8 @@ function ReportsForm({
           onChange={(e) => setYear(e.target.value)}
         />
       </label>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          handleGetReport(parseInt(month), parseInt(year));
-        }}
-      >
-        Get Reports
-      </button>
+      <br />
+      <button type="submit">Show Report</button>
       {showReport && <Report reportData={report} />}
     </form>
   );
