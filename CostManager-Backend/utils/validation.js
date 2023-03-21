@@ -29,13 +29,13 @@ const idGenerator=()=>{
 // Function to check if a given category is one of the valid categories
 const isValidCategory = (category) => {
   const validCategories = [
-    "food",
-    "health",
-    "housing",
-    "sport",
-    "education",
-    "transportation",
-    "other",
+    "Food",
+    "Health",
+    "Housing",
+    "Sport",
+    "Education",
+    "Transportation",
+    "Other",
   ];
   return validCategories.includes(category);
 };
