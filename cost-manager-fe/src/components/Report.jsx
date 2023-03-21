@@ -12,10 +12,9 @@ function Report({ reportData }) {
     });
     return new Intl.NumberFormat("en-US").format(sum);
   };
-  
 
   const nonEmptyCategories = Object.entries(reportData)
-    .filter(([, categoryData]) => categoryData.length > 0)
+    .filter(([, categoryData]) => Array.isArray(categoryData) && categoryData.length > 0)
     .map(([category, categoryData]) => ({ category, categoryData }));
 
   const sortedCategories = nonEmptyCategories.map(({ category, categoryData }) => ({
@@ -25,7 +24,7 @@ function Report({ reportData }) {
 
   return (
     <>
-      <div >
+      <div>
         {sortedCategories.map(({ category, categoryData }) => (
           <React.Fragment key={category}>
             <h3>{category}</h3>
