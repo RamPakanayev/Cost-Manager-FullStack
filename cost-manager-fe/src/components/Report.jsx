@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Report({ reportData }) {
+  const nonEmptyCategories = Object.entries(reportData)
+    .filter(([, categoryData]) => Array.isArray(categoryData) && categoryData.length > 0)
+    .map(([category, categoryData]) => ({ category, categoryData }));
+
+  const sortedCategories = nonEmptyCategories.map(({ category, categoryData }) => ({
+    category,
+    categoryData: categoryData.sort((a, b) => new Date(a.year, a.month - 1, a.day) - new Date(b.year, b.month - 1, b.day)),
+  }));
+
+  const [categories, setCategories] = useState(sortedCategories);
+
   const totalSum = () => {
     let sum = 0;
     Object.values(reportData).forEach((category) => {
@@ -13,24 +24,39 @@ function Report({ reportData }) {
     return new Intl.NumberFormat("en-US").format(sum);
   };
 
-  const nonEmptyCategories = Object.entries(reportData)
-    .filter(([, categoryData]) => Array.isArray(categoryData) && categoryData.length > 0)
-    .map(([category, categoryData]) => ({ category, categoryData }));
-
-  const sortedCategories = nonEmptyCategories.map(({ category, categoryData }) => ({
-    category,
-    categoryData: categoryData.sort((a, b) => new Date(a.year, a.month - 1, a.day) - new Date(b.year, b.month - 1, b.day)),
-  }));
+  async function handleDelete(costId) {
+    // Call your API to delete the cost using the cost ID
+    try {
+      const response = await fetch(`http://localhost:1300/deletecost/${costId}`, {
+        method: 'DELETE',
+      });
+  
+      if (response.ok) {
+        // Update the local state to remove the deleted cost
+        const updatedCategories = categories.map(({ category, categoryData }) => ({
+          category,
+          categoryData: categoryData.filter((item) => item.id !== costId),
+        })).filter(({ categoryData }) => categoryData.length > 0);
+  
+        setCategories(updatedCategories);
+      } else {
+        console.error('Failed to delete the cost. Status:', response.status, 'Status Text:', response.statusText);
+      }
+    } catch (err) {
+      console.error('Error:', err.message);
+    }
+  }
+  
 
   return (
     <>
       <div>
-        {sortedCategories.map(({ category, categoryData }) => (
+        {categories.map(({ category, categoryData }) => (
           <React.Fragment key={category}>
             <h3>{category}</h3>
             <div className="reports">
               {categoryData.map((item, index) => {
-                const time = item.id.substring(8, 14); // Extract the time from the ID
+                const time = item.id.substring(8, 14);
                 return (
                   <div key={index} className="report">
                     <div className="ReportNumber">
@@ -51,6 +77,7 @@ function Report({ reportData }) {
                         second: "2-digit",
                       }) : 'Invalid Date'}
                     </p>
+                    <button onClick={() => handleDelete(item.id)}>Delete</button>
                   </div>
                 );
               })}
@@ -65,6 +92,5 @@ function Report({ reportData }) {
     </>
   );
 }
-
 
 export default Report;
