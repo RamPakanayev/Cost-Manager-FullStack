@@ -22,29 +22,36 @@ function AddCostForm() {
       window.alert("Please enter a description");
       return false;
     }
+    if (category === "") {
+      setCategory("Other");
+    }
     return true;
   }
+  
 
   // A callback function to add the new cost item using fetch API
   function handleAddCostItem(e) {
     e.preventDefault(); // prevent the default form submission behavior
-
-    // validate the inputs
+  
+    // validate the inputs and update the category if necessary
     if (!validateInputs()) {
       return;
     }
-
+  
+    // use the updated category value
+    const updatedCategory = category === "" ? "Other" : category;
+  
     // create the cost item object
     const costItem = {
       user_id: userId,
       sum: sum,
-      category: category,
+      category: updatedCategory,
       description: description,
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate(),
     };
-
+  
     // send a POST request to the backend to add the new cost item
     fetch("/addCost", {
       method: "POST",
@@ -70,6 +77,7 @@ function AddCostForm() {
         window.alert("Failed to add cost item");
       });
   }
+  
 
   return (
     <form>
