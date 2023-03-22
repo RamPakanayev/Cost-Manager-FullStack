@@ -1,10 +1,12 @@
 const express = require("express");
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // Create an instance of express
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 // Import the costDoc and connectToDB functions from db.js
 const { connectToDB, costDoc,userDoc } = require("./db/db");
@@ -12,6 +14,7 @@ const { connectToDB, costDoc,userDoc } = require("./db/db");
 // Import the routers for the add cost, report, and about pages
 const addCostRouter = require("./routers/addCost");
 const reportRouter = require("./routers/report");
+const deleteCostRouter = require("./routers/deleteCost");
 const aboutRouter = require("./routers/about");
 
 // Connect to the MongoDB database as soon as the application starts
@@ -24,6 +27,7 @@ app.db = { costDoc,userDoc };
 app.use("/addcost", addCostRouter);
 app.use("/report", reportRouter);
 app.use("/about", aboutRouter);
+app.use("/deletecost", deleteCostRouter);
 
 
 
