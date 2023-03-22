@@ -19,36 +19,44 @@ router.post("/", async (req, res) => {
   let category = req.body.category;
   let sum = req.body.sum;
   let id =idGenerator()
-
+  
   
   // Check if the required fields (user_id, description, sum, category) are provided
   if (!userId || !description || !sum || !category) {
+    console.log(`userId = ${userId}\n description=${description} \n sum=${sum} \n category=${category}`);
     return res.status(400)
     .send("user_id, description, sum, and category are required keys.");
+   
   }
 
  // Check if the user_id exists in the users collection
  const userExists = await isValidUserId(userId);
  if (!userExists) {
+  console.log('2');
    return res.status(400).send("Invalid user_id.");
+   
  }
 
   // Check if the sum is a valid number
   if (isNaN(sum)) {
+    console.log('3');
     return res.status(400).send("Invalid sum. Sum must be a number.");
   }
 
   // Check if the category is valid
   if (!isValidCategory(category)) {
+    console.log('4');
     return res.status(400)
     .send("Invalid category. \n The options are: \n food, health, housing, sport,\n education, transportation and other.");
   }
 
   // Check if the date is valid
   if (!isValidDate(day, month, year)) {
+    console.log('5');
     return res.status(400)
     .send("Invalid date.\n Day must be between 1 to 31 or an empty filed,\n Month must be between 1 to 12  or an empty filed,\n Year must be 1900 and above or an empty filed.\n \n # Note:\n An empty felid will be filled by the current date.");
   }
+  console.log('6');
 
   // Creating a new cost document with the given parameters
   let cost = new costDoc({

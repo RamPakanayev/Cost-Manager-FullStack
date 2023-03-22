@@ -106,16 +106,16 @@ function AddCostForm() {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          
           <option value="">Select a category</option>
-          <option value="groceries">Food</option>
-          <option value="entertainment">Health</option>
-          <option value="transportation">Transportation</option>
-          <option value="housing">Housing</option>
-          <option value="personal_care">Sport</option>
-          <option value="personal_care">Education</option>
-          <option value="other">Other</option>
+          <option value="Food">Food</option>
+          <option value="Health">Health</option>
+          <option value="Transportation">Transportation</option>
+          <option value="Housing">Housing</option>
+          <option value="Sport">Sport</option>
+          <option value="Education">Education</option>
+          <option value="Other">Other</option>
         </select>
+
       </label>
      
       <br />

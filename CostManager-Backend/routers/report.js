@@ -5,14 +5,15 @@ const router = express.Router();
 
 // Define an array of categories for costs
 const categories = [
-  'food',
-  'health',
-  'housing',
-  'sport',
-  'education',
-  'transportation',
-  'other'
+  "Food",
+  "Health",
+  "Housing",
+  "Sport",
+  "Education",
+  "Transportation",
+  "Other",
 ];
+
 
 const isValidDate = (month,year) => {
   return month > 0 && month <= 12 &&year>=1900;
