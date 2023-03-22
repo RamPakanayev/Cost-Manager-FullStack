@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function Report({ reportData }) {
   const totalSum = () => {
@@ -19,7 +19,7 @@ function Report({ reportData }) {
 
   const sortedCategories = nonEmptyCategories.map(({ category, categoryData }) => ({
     category,
-    categoryData: categoryData.sort((a, b) => new Date(a.date) - new Date(b.date)),
+    categoryData: categoryData.sort((a, b) => new Date(a.year, a.month - 1, a.day) - new Date(b.year, b.month - 1, b.day)),
   }));
 
   return (
@@ -29,28 +29,31 @@ function Report({ reportData }) {
           <React.Fragment key={category}>
             <h3>{category}</h3>
             <div className="reports">
-              {categoryData.map((item, index) => (
-                <div key={index} className="report">
-                  <div className="ReportNumber">
-                    <p className="pCenter">{index + 1}</p>
+              {categoryData.map((item, index) => {
+                const time = item.id.substring(8, 14); // Extract the time from the ID
+                return (
+                  <div key={index} className="report">
+                    <div className="ReportNumber">
+                      <p className="pCenter">{index + 1}</p>
+                    </div>
+                    <p className="bold">
+                      Sum: {Intl.NumberFormat("en-US").format(item.sum)} $
+                    </p>
+                    <p>Description: {item.description}</p>
+                    <p>
+                      Date:{" "}
+                      {item.year && item.month && item.day ? new Date(item.year, item.month - 1, item.day, time.substr(0, 2), time.substr(2, 2), time.substr(4, 2)).toLocaleString("en-GB", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                      }) : 'Invalid Date'}
+                    </p>
                   </div>
-                  <p className="bold">
-                    Sum: {Intl.NumberFormat("en-US").format(item.sum)} $
-                  </p>
-                  <p>Description: {item.description}</p>
-                  <p>
-                    Date:{" "}
-                    {new Date(item.date).toLocaleString("en-GB", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                    })}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </React.Fragment>
         ))}
@@ -62,5 +65,6 @@ function Report({ reportData }) {
     </>
   );
 }
+
 
 export default Report;

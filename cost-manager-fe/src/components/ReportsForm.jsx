@@ -24,7 +24,6 @@ function ReportsForm() {
       console.error(error);
     }
   };
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();

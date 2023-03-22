@@ -5,7 +5,7 @@ import React, { useState } from "react";
 // When the form is submitted, it validates the inputs and calls the 'handleAddCostItem' callback function with the form data.
 function AddCostForm() {
   // State variables for sum, category, and description
-  const [sum, setSum] = useState("");
+  const [sum, setSum] = useState(0);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
@@ -14,7 +14,7 @@ function AddCostForm() {
   // A callback function for validating the form inputs.
   // It checks if the sum and description fields are not empty and displays an alert if they are.
   function validateInputs() {
-    if (sum === "") {
+    if (sum === 0) {
       window.alert("Please enter a sum");
       return false;
     }
@@ -47,9 +47,9 @@ function AddCostForm() {
       sum: sum,
       category: updatedCategory,
       description: description,
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
+      year: Number(date.getFullYear()),
+      month: Number(date.getMonth() + 1),
+      day: Number(date.getDate()),
     };
   
     // send a POST request to the backend to add the new cost item
@@ -63,7 +63,7 @@ function AddCostForm() {
       .then((res) => {
         if (res.ok) {
           // clear the input fields
-          setSum("");
+          setSum(0);
           setCategory("");
           setDescription("");
           setDate(new Date());
@@ -77,7 +77,6 @@ function AddCostForm() {
         window.alert("Failed to add cost item");
       });
   }
-  
 
   return (
     <form>

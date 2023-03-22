@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 let costSchema = mongoose.Schema(
   {
     user_id: String,
-    year: String,
-    month: String,
+    year: Number,
+    month: Number,
     day: Number,
     id: String,
     description: String,

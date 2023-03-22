@@ -57,12 +57,16 @@ router.get('/', async (req, res) => {
     result[category] = costs
       .filter(cost => cost.category === category)
       .map(cost => ({
+        year: cost.year, // Add this line
+        month: cost.month, // Add this line
         day: cost.day,
         description: cost.description,
-        sum: cost.sum
+        sum: cost.sum,
+        id: cost.id
       }));
     return result;
   }, {});
+
 
   // Send the report object as the response
   res.send(report);
