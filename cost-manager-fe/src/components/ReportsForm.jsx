@@ -6,6 +6,8 @@ function ReportsForm() {
   const [year, setYear] = useState("");
   const [report, setReport] = useState([]);
   const [showReport, setShowReport] = useState(false);
+  const [reportKey, setReportKey] = useState(Date.now());
+
 
   useEffect(() => {
     const currentDate = new Date();
@@ -20,10 +22,12 @@ function ReportsForm() {
       console.log("Report data: ", data);
       setReport(data);
       setShowReport(true);
+      setReportKey(Date.now()); // Update the reportKey
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,7 +61,7 @@ function ReportsForm() {
       </label>
       <br />
       <button type="submit">Show Report</button>
-      {showReport && <Report reportData={report} />}
+      {showReport && <Report key={reportKey} reportData={report} />}
     </form>
   );
 }
