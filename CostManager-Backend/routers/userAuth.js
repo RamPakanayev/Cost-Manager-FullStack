@@ -1,56 +1,94 @@
 const express = require("express");
 const router = express.Router();
-const { userDoc } = require("../db/db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { userDoc } = require("../db/db");
 
-router.post("/register", async (req, res) => {
-  const { username, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).send("Username and password are required.");
-  }
+// Signup route
+router.post("/", async (req, res) => {
+  const { email, password, firstName, lastName, birthday, id } = req.body;
 
-  const userExists = await userDoc.findOne({ username });
 
+  // Check if the email and password are provided
+    // Check if the required fields are provided
+    if (!email || !password || !firstName || !lastName || !birthday || !id) {
+      return res.status(400).send({ error: "All fields are required" });
+    }
+  // Check for duplicate users
+  const userExists = await userDoc.findOne({ email });
   if (userExists) {
-    return res.status(400).send("Username already exists.");
+    return res.status(400).send({ error: "Email already in use" });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = new userDoc({
-    username,
+  // Hash the password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  // Create a new user
+  const newUser = new userDoc({
+    _id: id,
+    email,
     password: hashedPassword,
+    first_name: firstName,
+    last_name: lastName,
+    birthday
+  });
+  
+  try {
+    // Save the user to the database
+    await newUser.save();
+    res.send({ message: "User created successfully" });
+  } catch (error) {
+    console.error("Error:", error); // Add this line to log the error to the console
+    res.status(500).send({ error: "Error creating user" });
+  }
+});
+
+// Login route
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if the email and password are provided
+  if (!email || !password) {
+    return res.status(400).send({ error: "Email and password are required" });
+  }
+
+  // Find the user in the database
+  const user = await userDoc.findOne({ email });
+  if (!user) {
+    return res.status(400).send({ error: "Invalid email or password" });
+  }
+
+  // Compare the password with the stored hash
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    return res.status(400).send({ error: "Invalid email or password" });
+  }
+
+  // Generate a JWT token
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || "your_jwt_secret", {
+    expiresIn: "1h",
   });
 
+  res.send({ message: "Logged in successfully", token });
+});
+
+// Middleware for protected routes
+const authenticate = (req, res, next) => {
+  const token = req.header("x-auth-token");
+  if (!token) {
+    return res.status(401).send({ error: "Access denied. No token provided." });
+  }
+
   try {
-    await user.save();
-    res.send("User registered successfully.");
-  } catch (err) {
-    res.status(500).send("Error while registering user.");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret");
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(400).send({ error: "Invalid token" });
   }
-});
+};
 
-router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    return res.status(400).send("Username and password are required.");
-  }
-
-  const user = await userDoc.findOne({ username });
-
-  if (!user) {
-    return res.status(400).send("Invalid username or password.");
-  }
-
-  const passwordMatch = await bcrypt.compare(password, user.password);
-
-  if (!passwordMatch) {
-    return res.status(400).send("Invalid username or password.");
-  }
-
-  res.send("User logged in successfully.");
-});
-
-module.exports = router;
+module.exports = { router, authenticate };

@@ -19,14 +19,17 @@ let costDoc = mongoose.model("costs", costSchema);
 // Define the Mongoose schema and model for users
 let userSchema = mongoose.Schema(
   {
-    _id: String,
-    first_name: String,
-    last_name: String,
-    birthday: String,
+    _id: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true },
+    birthday: { type: String, required: true },
   },
   { versionKey: false }
 );
 let userDoc = mongoose.model("users", userSchema);
+
 
 const connectToDB = async () => {
   let uri1 =

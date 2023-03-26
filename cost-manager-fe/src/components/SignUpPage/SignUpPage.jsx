@@ -14,7 +14,7 @@ function SignupPage() {
     // Add validation for all fields here
 
     try {
-      const response = await fetch('/signup', {
+      const response = await fetch('/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, firstName, lastName, birthday, id }),

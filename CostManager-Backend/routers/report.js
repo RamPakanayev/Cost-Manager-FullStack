@@ -1,6 +1,8 @@
 // Import the express module and create a new router object
 const express = require('express');
 const router = express.Router();
+// const { authenticate } = require("./userAuth");
+
 
 
 // Define an array of categories for costs
