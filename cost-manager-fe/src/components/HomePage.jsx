@@ -5,7 +5,7 @@ import ReportsForm from "./ReportsForm";
 function HomePage({ userId }) {
   return (
     <div className="HomePage">
-      <AddCostForm />
+      <AddCostForm userId={userId}/>
       <ReportsForm userId={userId} />
     </div>
   );

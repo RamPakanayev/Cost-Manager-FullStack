@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
+import './LoginPage.css';
 
 function LoginPage({ setIsLoggedIn, setUserId }) {
   const [email, setEmail] = useState('');
@@ -55,8 +56,11 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
         />
       </label>
       <br />
-      <button type="submit">Login</button>
-      <Link to="/signup">Sign up</Link>
+      <button className='login' type="submit">Login</button>
+      <p>Dont have a user yet?</p>
+      <Link to="/signup" className='signup'>Sign up</Link> 
+      
+     
     </form>
   );
 }

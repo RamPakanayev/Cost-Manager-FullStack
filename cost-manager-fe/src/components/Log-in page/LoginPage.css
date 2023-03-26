@@ -1,0 +1,19 @@
+
+.signup {
+  margin-left:10px;
+  width: 100%;
+  margin-right: 10px;
+  background-color: #28a745;
+  color: #f6f8fa;
+  padding: 6px 212px;
+  margin: 4.6px 0;
+  border: none;
+  border-radius: 2.1px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.signup:hover {
+  background-color: #15e41f;
+}
