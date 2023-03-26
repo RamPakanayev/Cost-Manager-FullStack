@@ -3,13 +3,13 @@ import React, { useState } from "react";
 // A functional component that receives a callback function 'handleAddCostItem' as a prop.
 // It renders a form for adding new cost items and includes input fields for sum, category, and description.
 // When the form is submitted, it validates the inputs and calls the 'handleAddCostItem' callback function with the form data.
-function AddCostForm() {
+function AddCostForm({ userId }) {
   // State variables for sum, category, and description
   const [sum, setSum] = useState(0);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
-  const [userId, setUserId] = useState("123123"); // set the default userId to "123123"
+  // const [userId, setUserId] = useState("123123"); // set the default userId to "123123"
 
   // A callback function for validating the form inputs.
   // It checks if the sum and description fields are not empty and displays an alert if they are.
@@ -88,8 +88,7 @@ function AddCostForm() {
         <input
           type="text"
           value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          placeholder="Enter a user ID"
+          disabled
         />
       </label>
 

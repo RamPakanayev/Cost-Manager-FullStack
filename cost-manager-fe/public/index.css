@@ -39,7 +39,10 @@ label {
 }
 
 input[type="number"],
+input[type="password"],
+input[type="email"],
 input[type="text"],
+input[type="date"],
 select {
   width: 100%;
   font-size: 0.8em;
