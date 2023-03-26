@@ -9,6 +9,8 @@ import HomePage from "./HomePage";
 function App() {
   const [imagePath, setImagePath] = useState("./Logo.png");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
+
 
   useEffect(() => {
     setImagePath(process.env.PUBLIC_URL + "/Logo.png");
@@ -25,7 +27,7 @@ function App() {
               isLoggedIn ? (
                 <Navigate to="/homepage" />
               ) : (
-                <LoginPage setIsLoggedIn={setIsLoggedIn} />
+                <LoginPage setIsLoggedIn={setIsLoggedIn}setUserId={setUserId} />
               )
             }
           />
@@ -40,16 +42,16 @@ function App() {
             }
           />
           <Route
-            path="/homepage"
-            element={
-              isLoggedIn ? (
-                <HomePage />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
+              path="/homepage"
+              element={
+                isLoggedIn ? (
+                  <HomePage userId={userId} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
           />
-          <Route path="/" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
+         <Route path="/" element={<LoginPage setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />} />
         </Routes>
       </div>
     </Router>

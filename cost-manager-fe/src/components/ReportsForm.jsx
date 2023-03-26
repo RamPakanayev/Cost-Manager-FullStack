@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Report from "./Report";
 
-function ReportsForm() {
+function ReportsForm({ userId }) {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [report, setReport] = useState([]);
@@ -17,7 +17,7 @@ function ReportsForm() {
 
   const handleGetReport = async () => {
     try {
-      const response = await fetch(`/report?year=${year}&month=${month}&user_id=123123`);
+      const response = await fetch(`/report?year=${year}&month=${month}&user_id=${userId}`);
       const data = await response.json();
       console.log("Report data: ", data);
       setReport(data);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 
-function LoginPage({ setIsLoggedIn }) {
+function LoginPage({ setIsLoggedIn, setUserId }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -11,14 +11,16 @@ function LoginPage({ setIsLoggedIn }) {
     // Add validation for email and password here
 
     try {
-      const response = await fetch('/login', {
+      const response = await fetch('/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
-        // Save token/session and set isLoggedIn to true
+        const userData = await response.json();
+        // Save user ID and set isLoggedIn to true
+        setUserId(userData.user_id);
         setIsLoggedIn(true);
       } else {
         // Handle errors

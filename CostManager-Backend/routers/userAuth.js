@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
     last_name: lastName,
     birthday
   });
-  
+
   try {
     // Save the user to the database
     await newUser.save();
@@ -72,7 +72,7 @@ router.post("/login", async (req, res) => {
     expiresIn: "1h",
   });
 
-  res.send({ message: "Logged in successfully", token });
+  res.send({ message: "Logged in successfully", token , user_id: user._id});
 });
 
 // Middleware for protected routes
