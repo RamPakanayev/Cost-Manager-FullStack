@@ -11,15 +11,16 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
-    // Add validation for email and password here
-  
-    try {
-      const response = await fetch('/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+
+  // Add validation for email and password here
+    const lowercaseEmail = email.toLowerCase(); // Convert the email to lowercase
+      
+  try {
+    const response = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: lowercaseEmail, password }),
+    });
   
       if (response.ok) {
         const userData = await response.json();

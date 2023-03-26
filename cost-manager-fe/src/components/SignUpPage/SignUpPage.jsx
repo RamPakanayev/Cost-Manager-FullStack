@@ -16,12 +16,15 @@ function SignupPage() {
     e.preventDefault();
 
     // Add validation for all fields here
+    
+  const lowercaseEmail = email.toLowerCase(); // Convert the email to lowercase
+
   try {
-      const response = await fetch('/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, firstName, lastName, birthday, id }),
-      });
+    const response = await fetch('/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: lowercaseEmail, password, firstName, lastName, birthday, id }),
+     });
 
       if (response.ok) {
         const responseMessage = await response.json();
