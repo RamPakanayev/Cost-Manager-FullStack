@@ -19,7 +19,6 @@ let costDoc = mongoose.model("costs", costSchema);
 // Define the Mongoose schema and model for users
 let userSchema = mongoose.Schema(
   {
-    _id: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     first_name: { type: String, required: true },

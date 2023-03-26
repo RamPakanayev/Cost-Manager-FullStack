@@ -7,14 +7,15 @@ const { userDoc } = require("../db/db");
 
 // Signup route
 router.post("/", async (req, res) => {
-  const { email, password, firstName, lastName, birthday, id } = req.body;
+  const { email, password, firstName, lastName, birthday} = req.body;
 
 
   // Check if the email and password are provided
     // Check if the required fields are provided
-    if (!email || !password || !firstName || !lastName || !birthday || !id) {
+    if (!email || !password || !firstName || !lastName || !birthday) {
       return res.status(400).send({ error: "All fields are required" });
     }
+    
   // Check for duplicate users
   const userExists = await userDoc.findOne({ email });
   if (userExists) {
@@ -28,13 +29,13 @@ router.post("/", async (req, res) => {
 
   // Create a new user
   const newUser = new userDoc({
-    _id: id,
     email,
     password: hashedPassword,
     first_name: firstName,
     last_name: lastName,
     birthday
   });
+  
 
   try {
     // Save the user to the database

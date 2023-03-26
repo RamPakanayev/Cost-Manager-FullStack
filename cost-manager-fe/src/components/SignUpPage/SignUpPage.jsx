@@ -7,38 +7,37 @@ function SignupPage() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [id, setId] = useState('');
+  // const [userId, setUserId] = useState('');
   const [serverResponse, setServerResponse] = useState('');
 
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
-    e.preventDefault();
-
-    // Add validation for all fields here
+      e.preventDefault();
     
-  const lowercaseEmail = email.toLowerCase(); // Convert the email to lowercase
-
-  try {
-    const response = await fetch('/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: lowercaseEmail, password, firstName, lastName, birthday, id }),
-     });
-
-      if (response.ok) {
-        const responseMessage = await response.json();
-        alert(responseMessage.message); // Show server response message in an alert
-        navigate('/login'); // Navigate back to the login page
-      } else {
-        const errorResponse = await response.json();
-        setServerResponse(errorResponse.error);
-        alert(serverResponse); // Show server response error in an alert
+      const lowercaseEmail = email.toLowerCase(); // Convert the email to lowercase
+    
+      try {
+        const response = await fetch('/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: lowercaseEmail, password, firstName, lastName, birthday }),
+        });
+    
+        if (response.ok) {
+          const responseMessage = await response.json();
+          alert(responseMessage.message); // Show server response message in an alert
+          navigate('/login'); // Navigate back to the login page
+        } else {
+          const errorResponse = await response.json();
+          alert(errorResponse.error); // Show server response error in an alert
+        }
+      } catch (error) {
+        // Handle network errors
+        alert('Network error: ' + error.message);
       }
-    } catch (error) {
-      // Handle network errors
-    }
   };
+  
 
   return (
     <form onSubmit={handleSignup}>
@@ -98,16 +97,16 @@ function SignupPage() {
         />
       </label>
       <br />
-      <label>
+      {/* <label>
         ID:
         <input
           type="text"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-          placeholder="ID"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          placeholder="User ID"
           required
         />
-      </label>
+      </label> */}
       <br />
       <button type="submit">Signup</button>
     </form>
