@@ -19,10 +19,37 @@ function App() {
       <div className="App">
         <img src={imagePath} alt="Logo" />
         <Routes>
-          <Route path="/login" element={isLoggedIn ? <Navigate to="/homepage" /> : <LoginPage setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/homepage" element={isLoggedIn ? <HomePage /> : <Navigate to="/login" />} />
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route
+            path="/login"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/homepage" />
+              ) : (
+                <LoginPage setIsLoggedIn={setIsLoggedIn} />
+              )
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/homepage" />
+              ) : (
+                <SignupPage />
+              )
+            }
+          />
+          <Route
+            path="/homepage"
+            element={
+              isLoggedIn ? (
+                <HomePage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route path="/" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
         </Routes>
       </div>
     </Router>

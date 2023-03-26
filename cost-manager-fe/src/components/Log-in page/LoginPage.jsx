@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 
-function LoginPage({ setIsLoggedIn, isLoggedIn }) {
+function LoginPage({ setIsLoggedIn }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -55,7 +55,6 @@ function LoginPage({ setIsLoggedIn, isLoggedIn }) {
       <br />
       <button type="submit">Login</button>
       <Link to="/signup">Sign up</Link>
-      {isLoggedIn && <Navigate to="/homepage" />}
     </form>
   );
 }
