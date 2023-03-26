@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SignupPage() {
   const [email, setEmail] = useState('');
@@ -7,13 +8,15 @@ function SignupPage() {
   const [lastName, setLastName] = useState('');
   const [birthday, setBirthday] = useState('');
   const [id, setId] = useState('');
+  const [serverResponse, setServerResponse] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
     // Add validation for all fields here
-
-    try {
+  try {
       const response = await fetch('/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -21,9 +24,13 @@ function SignupPage() {
       });
 
       if (response.ok) {
-        // Save token/session and redirect user to the main page
+        const responseMessage = await response.json();
+        alert(responseMessage.message); // Show server response message in an alert
+        navigate('/login'); // Navigate back to the login page
       } else {
-        // Handle errors
+        const errorResponse = await response.json();
+        setServerResponse(errorResponse.error);
+        alert(serverResponse); // Show server response error in an alert
       }
     } catch (error) {
       // Handle network errors
