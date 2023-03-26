@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 import './LoginPage.css';
 
 function LoginPage({ setIsLoggedIn, setUserId }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,6 +24,8 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
         // Save user ID and set isLoggedIn to true
         setUserId(userData.user_id);
         setIsLoggedIn(true);
+        // Navigate to the homepage
+        navigate('/homepage');
       } else {
         // Handle errors
       }
@@ -34,6 +37,7 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
   return (
     <form onSubmit={handleLogin}>
       <h2>Login</h2>
+      <hr/>
       <label>
         Email:
         <input
