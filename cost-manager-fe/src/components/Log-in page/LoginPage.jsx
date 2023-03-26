@@ -5,20 +5,22 @@ import './LoginPage.css';
 function LoginPage({ setIsLoggedIn, setUserId }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     // Add validation for email and password here
-
+  
     try {
       const response = await fetch('/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (response.ok) {
         const userData = await response.json();
         // Save user ID and set isLoggedIn to true
@@ -27,12 +29,14 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
         // Navigate to the homepage
         navigate('/homepage');
       } else {
-        // Handle errors
+        const errorResponse = await response.json();
+        setErrorMessage(errorResponse.error);
       }
     } catch (error) {
-      // Handle network errors
+      setErrorMessage('Network error. Please try again later.');
     }
   };
+  
 
   return (
     <form onSubmit={handleLogin}>
@@ -60,11 +64,12 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
         />
       </label>
       <br />
+
       <button className='login' type="submit">Login</button>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <p>Dont have a user yet?</p>
-      <Link to="/signup" className='signup'>Sign up</Link> 
-      
-     
+      <Link to="/signup" className='signup'>Sign up</Link>
+        
     </form>
   );
 }

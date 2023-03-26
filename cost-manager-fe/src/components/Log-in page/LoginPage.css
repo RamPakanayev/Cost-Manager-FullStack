@@ -16,3 +16,7 @@
 .signup:hover {
   background-color: #15e41f;
 }
+.error-message {
+  color: red;
+  margin-top: 1rem;
+}
