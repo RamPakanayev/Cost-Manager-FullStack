@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 
-function LoginPage() {
+function LoginPage({ setIsLoggedIn, isLoggedIn }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,7 +18,8 @@ function LoginPage() {
       });
 
       if (response.ok) {
-        // Save token/session and redirect user to the main page
+        // Save token/session and set isLoggedIn to true
+        setIsLoggedIn(true);
       } else {
         // Handle errors
       }
@@ -52,6 +54,8 @@ function LoginPage() {
       </label>
       <br />
       <button type="submit">Login</button>
+      <Link to="/signup">Sign up</Link>
+      {isLoggedIn && <Navigate to="/homepage" />}
     </form>
   );
 }
