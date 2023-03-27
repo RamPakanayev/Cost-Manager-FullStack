@@ -83,7 +83,7 @@ function AddCostForm({ userId }) {
       <h2>Add new cost item</h2>
       <hr />
 
-      <label>
+      {/* <label>
         User ID:
         <input
           type="text"
@@ -91,8 +91,7 @@ function AddCostForm({ userId }) {
           disabled
         />
       </label>
-
-      <br />
+  <br />*/}
 
       <label>
         Sum:
