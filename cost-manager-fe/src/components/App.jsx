@@ -6,14 +6,40 @@ import SignupPage from "./SignUpPage/SignUpPage";
 import LoginPage from "./Log-in page/LoginPage";
 import HomePage from "./HomePage";
 import Header from "./Header/Header";
+import jwt_decode from 'jwt-decode';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwt_decode(token); // You need to install jwt-decode library: `npm install jwt-decode`
+      if (decodedToken.exp * 1000 > Date.now()) {
+        setIsLoggedIn(true);
+        setUserId(decodedToken._id);
+      } else {
+        localStorage.removeItem('token');
+      }
+    }
+  }, []);
+
+    // Inside App component
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setUserId(null);
+  };
+
+
+
+  
   return (
     <>
-    <Header />
+    <Header handleLogout={handleLogout} />
     <Router>
       <div className="App">
         
