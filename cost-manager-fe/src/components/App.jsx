@@ -7,6 +7,7 @@ import LoginPage from "./Log-in page/LoginPage";
 import HomePage from "./HomePage";
 import Header from "./Header/Header";
 import jwt_decode from 'jwt-decode';
+import Footer from "./Footer/Footer";
 
 
 function App() {
@@ -44,6 +45,17 @@ function App() {
       <div className="App">
         
         <Routes>
+          
+        <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/homepage" />
+              ) : (
+                <LoginPage setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />
+              )
+            }
+          />
           <Route
             path="/login"
             element={
@@ -78,6 +90,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    <Footer />
     </>
   );
 }
