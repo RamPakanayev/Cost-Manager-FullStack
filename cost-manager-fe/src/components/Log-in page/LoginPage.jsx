@@ -27,6 +27,7 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
         // Save user ID and set isLoggedIn to true
         setUserId(userData.user_id);
         setIsLoggedIn(true);
+        localStorage.setItem('token', userData.token);
         // Navigate to the homepage
         navigate('/homepage');
       } else {
