@@ -45,6 +45,17 @@ function App() {
       <div className="App">
         
         <Routes>
+          
+        <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/homepage" />
+              ) : (
+                <LoginPage setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />
+              )
+            }
+          />
           <Route
             path="/login"
             element={
