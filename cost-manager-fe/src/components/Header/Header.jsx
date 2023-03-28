@@ -11,6 +11,8 @@ function Header({handleLogout }) {
         <a href="/homepage" className="nav-link">Home</a>
         <a href="/user-info" className="nav-link">User Info</a>
         <a href="/settings" className="nav-link">Settings</a>
+        <a href="/homepage" className="nav-link">Search</a>
+        <a href="/settings" className="nav-link">About</a>
         <button onClick={handleLogout}>Logout</button>
       </nav>
     </header>

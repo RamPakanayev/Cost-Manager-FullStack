@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './Report.css';
 function Report({ reportData }) {
   const nonEmptyCategories = Object.entries(reportData)
     .filter(([, categoryData]) => Array.isArray(categoryData) && categoryData.length > 0)
@@ -77,7 +77,7 @@ function Report({ reportData }) {
                         second: "2-digit",
                       }) : 'Invalid Date'}
                     </p>
-                    <button onClick={() => handleDelete(item.id)}>Delete</button>
+                    <button className='delete-btn' onClick={() => handleDelete(item.id)}>Delete</button>
                   </div>
                 );
               })}

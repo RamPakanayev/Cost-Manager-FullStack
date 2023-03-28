@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Report from "./Report";
+import Report from "../Report/Report";
 
 function ReportsForm({ userId }) {
   const [month, setMonth] = useState("");
