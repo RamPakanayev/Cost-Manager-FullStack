@@ -1,58 +1,68 @@
 import React, { useState } from "react";
+import "./AddCostForm.css";
 
-// A functional component that receives a callback function 'handleAddCostItem' as a prop.
-// It renders a form for adding new cost items and includes input fields for sum, category, and description.
-// When the form is submitted, it validates the inputs and calls the 'handleAddCostItem' callback function with the form data.
 function AddCostForm({ userId }) {
-  // State variables for sum, category, and description
   const [sum, setSum] = useState(0);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
-  // const [userId, setUserId] = useState("123123"); // set the default userId to "123123"
-
-  // A callback function for validating the form inputs.
-  // It checks if the sum and description fields are not empty and displays an alert if they are.
+  const [sumError, setSumError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   function validateInputs() {
-    if (sum === 0) {
-      window.alert("Please enter a sum");
-      return false;
+    let isValid = true;
+  
+    if (sum === "" || sum < 0) {
+      setSumError(true);
+      setErrorMessage("Sum must be a number greater than 0.");
+      isValid = false;
+    } else {
+      setSumError(false);
     }
-    if (description === "") {
-      window.alert("Please enter a description");
-      return false;
+  
+    if (description.trim() === "") {
+      setDescriptionError(true);
+      if (sum === "" || sum < 0) {
+        setErrorMessage("Sum and Description are required fields.");
+      } else {
+        setErrorMessage("Description cannot be empty.");
+      }
+      isValid = false;
+    } else {
+      setDescriptionError(false);
     }
+  
     if (category === "") {
       setCategory("Other");
     }
-    return true;
+  
+    if (isValid) {
+      setErrorMessage("");
+    }
+  
+    return isValid;
   }
   
 
-  // A callback function to add the new cost item using fetch API
   function handleAddCostItem(e) {
-    e.preventDefault(); // prevent the default form submission behavior
-  
-    // validate the inputs and update the category if necessary
+    e.preventDefault();
+
     if (!validateInputs()) {
       return;
     }
-  
-    // use the updated category value
+
     const updatedCategory = category === "" ? "Other" : category;
-  
-    // create the cost item object
+
     const costItem = {
       user_id: userId,
-      sum: sum,
+      sum: parseFloat(sum), // Make sure to parse the sum as a float
       category: updatedCategory,
       description: description,
       year: Number(date.getFullYear()),
       month: Number(date.getMonth() + 1),
       day: Number(date.getDate()),
     };
-  
-    // send a POST request to the backend to add the new cost item
+
     fetch("/addCost", {
       method: "POST",
       headers: {
@@ -62,36 +72,23 @@ function AddCostForm({ userId }) {
     })
       .then((res) => {
         if (res.ok) {
-          // clear the input fields
-          setSum(0);
+          setSum("");
           setCategory("");
           setDescription("");
           setDate(new Date());
-          window.alert("Cost item was successfully added");
         } else {
           throw new Error("Failed to add cost item");
         }
       })
       .catch((err) => {
         console.error(err);
-        window.alert("Failed to add cost item");
+        setErrorMessage("Failed to add cost item");
       });
   }
-
   return (
-    <form>
+    <form className="cost-item-form" onSubmit={handleAddCostItem}>
       <h2>Add new cost item</h2>
       <hr />
-
-      {/* <label>
-        User ID:
-        <input
-          type="text"
-          value={userId}
-          disabled
-        />
-      </label>
-  <br />*/}
 
       <label>
         Sum:
@@ -101,16 +98,15 @@ function AddCostForm({ userId }) {
           onChange={(e) => setSum(e.target.value)}
           placeholder="Enter a sum"
           min="0"
+          required
+          className={sumError ? "error" : ""}
         />
       </label>
       <br />
 
       <label>
         Category:
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        >
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">Select a category</option>
           <option value="Food">Food</option>
           <option value="Health">Health</option>
@@ -120,9 +116,8 @@ function AddCostForm({ userId }) {
           <option value="Education">Education</option>
           <option value="Other">Other</option>
         </select>
-
       </label>
-     
+
       <br />
       <label>
         Description:
@@ -131,6 +126,7 @@ function AddCostForm({ userId }) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Enter a description"
+          className={descriptionError ? "error" : ""}
         />
       </label>
       <br />
@@ -143,7 +139,10 @@ function AddCostForm({ userId }) {
         />
       </label>
       <br />
+
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <button
+        type="submit"
         onClick={(e) => {
           e.preventDefault();
           if (validateInputs()) {
@@ -152,6 +151,11 @@ function AddCostForm({ userId }) {
             setCategory("");
             setDescription("");
             setDate(new Date());
+          } else {
+            setTimeout(() => {
+              setSumError(false);
+              setDescriptionError(false);
+            }, 500);
           }
         }}
       >
