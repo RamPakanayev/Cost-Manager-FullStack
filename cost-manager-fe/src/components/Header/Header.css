@@ -7,7 +7,30 @@
   height: 50px;
   margin-bottom: 5%;
   background-color: #24292e;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }
+
+
+body {
+  padding-top: 120px;
+}
+
+@media (max-width: 800px) {
+  body {
+    padding-top: 40px;
+  }
+}
+
+@media (min-zoom: 140%) {
+  body {
+    padding-top: 140px;
+  }
+}
+
+
 
 .logo-container {
   display: flex;
