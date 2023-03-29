@@ -9,9 +9,11 @@ function AddCostForm({ userId }) {
   const [sumError, setSumError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   function validateInputs() {
     let isValid = true;
-  
+
     if (sum === "" || sum < 0) {
       setSumError(true);
       setErrorMessage("Sum must be a number greater than 0.");
@@ -19,7 +21,7 @@ function AddCostForm({ userId }) {
     } else {
       setSumError(false);
     }
-  
+
     if (description.trim() === "") {
       setDescriptionError(true);
       if (sum === "" || sum < 0) {
@@ -31,18 +33,20 @@ function AddCostForm({ userId }) {
     } else {
       setDescriptionError(false);
     }
-  
+
     if (category === "") {
       setCategory("Other");
     }
-  
+
     if (isValid) {
-      setErrorMessage("");
+      setSuccessMessage("Cost item added successfully!");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
     }
-  
+
     return isValid;
   }
-  
 
   function handleAddCostItem(e) {
     e.preventDefault();
@@ -50,6 +54,8 @@ function AddCostForm({ userId }) {
     if (!validateInputs()) {
       return;
     }
+    // Reset the error message
+    setErrorMessage("");
 
     const updatedCategory = category === "" ? "Other" : category;
 
@@ -76,6 +82,10 @@ function AddCostForm({ userId }) {
           setCategory("");
           setDescription("");
           setDate(new Date());
+          setSuccessMessage("Cost item added successfully!");
+          setTimeout(() => {
+            setSuccessMessage("");
+          }, 2000);
         } else {
           throw new Error("Failed to add cost item");
         }
@@ -85,6 +95,7 @@ function AddCostForm({ userId }) {
         setErrorMessage("Failed to add cost item");
       });
   }
+
   return (
     <form className="cost-item-form" onSubmit={handleAddCostItem}>
       <h2>Add new cost item</h2>
@@ -138,9 +149,12 @@ function AddCostForm({ userId }) {
           onChange={(e) => setDate(new Date(e.target.value))}
         />
       </label>
-      <br />
 
       {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {successMessage && (
+        <div className="success-message">{successMessage}</div>
+      )}
+
       <button
         type="submit"
         onClick={(e) => {
