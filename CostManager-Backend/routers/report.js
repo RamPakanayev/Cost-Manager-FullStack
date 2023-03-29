@@ -1,9 +1,7 @@
 // Import the express module and create a new router object
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 // const { authenticate } = require("./userAuth");
-
-
 
 // Define an array of categories for costs
 const categories = [
@@ -16,14 +14,12 @@ const categories = [
   "Other",
 ];
 
-
-const isValidDate = (month,year) => {
-  return month > 0 && month <= 12 &&year>=1900;
+const isValidDate = (month, year) => {
+  return month > 0 && month <= 12 && year >= 1900;
 };
 
 // Handle GET requests to the / report endpoint
-router.get('/', async (req, res) => {
-
+router.get("/", async (req, res) => {
   // Logging message to track that the report route is being processed
   console.log("Processing report...");
 
@@ -32,53 +28,56 @@ router.get('/', async (req, res) => {
 
   // If any of the required parameters is missing, return an error
   if (!year || !month || !user_id) {
-  return res.status(400).send({ error: "Invalid query parameters" });
+    return res.status(400).send({ error: "Invalid query parameters" });
   }
 
   // Check if the date is valid
-  if(!isValidDate(month,year)){
-    return res.status(400).send({error:"Invalid date. Year must be 1900 and above . Month must be between 1 to 12."})
+  if (!isValidDate(month, year)) {
+    return res
+      .status(400)
+      .send({
+        error:
+          "Invalid date. Year must be 1900 and above . Month must be between 1 to 12.",
+      });
   }
-
 
   try {
     // Find costs documents in the database based on user_id, year, and month
     const costs = await req.app.db.costDoc.find({
-    user_id: user_id,
-    year: year,
-    month: month
-  });
-  // If no costs were found, return a message to the client
-  if (!costs.length) {
-    return res.send({ message: "No costs found for specified user_id and month/year" });
-  }
-  console.log("processing report");
-  
-  // Create a report object by grouping the costs by category
-  const report = categories.reduce((result, category) => {
-    result[category] = costs
-      .filter(cost => cost.category === category)
-      .map(cost => ({
-        year: cost.year, // Add this line
-        month: cost.month, // Add this line
-        day: cost.day,
-        description: cost.description,
-        sum: cost.sum,
-        id: cost.id
-      }));
-    return result;
-  }, {});
+      user_id: user_id,
+      year: year,
+      month: month,
+    });
+    // If no costs were found, return a message to the client
+    if (!costs.length) {
+      return res.send({
+        message: "No costs found for specified user_id and month/year",
+      });
+    }
+    console.log("processing report");
 
+    // Create a report object by grouping the costs by category
+    const report = categories.reduce((result, category) => {
+      result[category] = costs
+        .filter((cost) => cost.category === category)
+        .map((cost) => ({
+          year: cost.year, // Add this line
+          month: cost.month, // Add this line
+          day: cost.day,
+          description: cost.description,
+          sum: cost.sum,
+          id: cost.id,
+        }));
+      return result;
+    }, {});
 
-  // Send the report object as the response
-  res.send(report);
-  } 
-
-  catch (err) {
+    // Send the report object as the response
+    res.send(report);
+  } catch (err) {
     // If there is an error while fetching the costs, return an error
-    return res.status(500).send({ error: 'Error while fetching costs' });
+    return res.status(500).send({ error: "Error while fetching costs" });
   }
-  });
-    
-  // Export the router as a module
-  module.exports = router;
+});
+
+// Export the router as a module
+module.exports = router;

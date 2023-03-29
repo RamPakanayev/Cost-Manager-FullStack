@@ -5,11 +5,10 @@ import ReportsForm from "./ReportsForm";
 function HomePage({ userId }) {
   return (
     <div className="HomePage">
-      <AddCostForm userId={userId}/>
+      <AddCostForm userId={userId} />
       <ReportsForm userId={userId} />
     </div>
   );
 }
-
 
 export default HomePage;

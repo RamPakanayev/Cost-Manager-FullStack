@@ -10,7 +10,7 @@ let costSchema = mongoose.Schema(
     id: String,
     description: String,
     category: String,
-    sum: Number
+    sum: Number,
   },
   { versionKey: false }
 );
@@ -28,7 +28,6 @@ let userSchema = mongoose.Schema(
   { versionKey: false }
 );
 let userDoc = mongoose.model("users", userSchema);
-
 
 const connectToDB = async () => {
   let uri1 =

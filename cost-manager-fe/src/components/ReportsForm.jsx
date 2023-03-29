@@ -8,7 +8,6 @@ function ReportsForm({ userId }) {
   const [showReport, setShowReport] = useState(false);
   const [reportKey, setReportKey] = useState(Date.now());
 
-
   useEffect(() => {
     const currentDate = new Date();
     setMonth(String(currentDate.getMonth() + 1));
@@ -17,7 +16,9 @@ function ReportsForm({ userId }) {
 
   const handleGetReport = async () => {
     try {
-      const response = await fetch(`/report?year=${year}&month=${month}&user_id=${userId}`);
+      const response = await fetch(
+        `/report?year=${year}&month=${month}&user_id=${userId}`
+      );
       const data = await response.json();
       console.log("Report data: ", data);
       setReport(data);
@@ -27,7 +28,6 @@ function ReportsForm({ userId }) {
       console.error(error);
     }
   };
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();

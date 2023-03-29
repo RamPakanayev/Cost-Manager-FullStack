@@ -12,7 +12,10 @@ const authenticate = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret");
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "your_jwt_secret"
+    );
     req.user = decoded;
     next();
   } catch (error) {
@@ -20,24 +23,21 @@ const authenticate = (req, res, next) => {
   }
 };
 
-
 // Signup route
 router.post("/", async (req, res) => {
-  const { email, password, firstName, lastName, birthday} = req.body;
-
+  const { email, password, firstName, lastName, birthday } = req.body;
 
   // Check if the email and password are provided
-    // Check if the required fields are provided
-    if (!email || !password || !firstName || !lastName || !birthday) {
-      return res.status(400).send({ error: "All fields are required" });
-    }
-    
+  // Check if the required fields are provided
+  if (!email || !password || !firstName || !lastName || !birthday) {
+    return res.status(400).send({ error: "All fields are required" });
+  }
+
   // Check for duplicate users
   const userExists = await userDoc.findOne({ email });
   if (userExists) {
     return res.status(400).send({ error: "Email already in use" });
   }
-
 
   // Hash the password
   const salt = await bcrypt.genSalt(10);
@@ -49,9 +49,8 @@ router.post("/", async (req, res) => {
     password: hashedPassword,
     first_name: firstName,
     last_name: lastName,
-    birthday
+    birthday,
   });
-  
 
   try {
     // Save the user to the database
@@ -85,12 +84,15 @@ router.post("/login", async (req, res) => {
   }
 
   // Generate a JWT token
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || "your_jwt_secret", {
-    expiresIn: "1h",
-  });
+  const token = jwt.sign(
+    { _id: user._id },
+    process.env.JWT_SECRET || "your_jwt_secret",
+    {
+      expiresIn: "1h",
+    }
+  );
 
-  res.send({ message: "Logged in successfully", token , user_id: user._id});
+  res.send({ message: "Logged in successfully", token, user_id: user._id });
 });
-
 
 module.exports = { router, authenticate };
