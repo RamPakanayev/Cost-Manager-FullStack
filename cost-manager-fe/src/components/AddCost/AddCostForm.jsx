@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./AddCostForm.css";
 
 function AddCostForm({ userId }) {
-  const [sum, setSum] = useState(0);
+  const [sum, setSum] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
@@ -14,7 +14,7 @@ function AddCostForm({ userId }) {
   function validateInputs() {
     let isValid = true;
 
-    if (sum === "" || sum < 0) {
+    if (sum === "" || sum === '0') {
       setSumError(true);
       setErrorMessage("Sum must be a number greater than 0.");
       isValid = false;
@@ -51,9 +51,9 @@ function AddCostForm({ userId }) {
   function handleAddCostItem(e) {
     e.preventDefault();
 
-    if (!validateInputs()) {
-      return;
-    }
+    // if (!validateInputs()) {
+    //   return;
+    // }
     // Reset the error message
     setErrorMessage("");
 
