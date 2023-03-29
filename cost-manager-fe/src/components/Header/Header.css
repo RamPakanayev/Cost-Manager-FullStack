@@ -33,7 +33,7 @@
   position: relative;
 }
 
-.nav-link:hover::before {
+.nav-link::before {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -48,6 +48,10 @@
 
 .nav-link:hover {
   color: #00ff48;
+}
+
+.nav-link:hover::before {
+  transform: scaleY(1);
 }
 
 button {
