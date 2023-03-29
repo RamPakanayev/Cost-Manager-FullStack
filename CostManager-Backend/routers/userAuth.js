@@ -4,6 +4,22 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { userDoc } = require("../db/db");
 
+// Middleware for protected routes
+const authenticate = (req, res, next) => {
+  const token = req.header("x-auth-token");
+  if (!token) {
+    return res.status(401).send({ error: "Access denied. No token provided." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret");
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(400).send({ error: "Invalid token" });
+  }
+};
+
 
 // Signup route
 router.post("/", async (req, res) => {
@@ -59,13 +75,13 @@ router.post("/login", async (req, res) => {
   // Find the user in the database
   const user = await userDoc.findOne({ email });
   if (!user) {
-    return res.status(400).send({ error: "Invalid email or password" });
+    return res.status(400).send({ error: "Invalid email" });
   }
 
   // Compare the password with the stored hash
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) {
-    return res.status(400).send({ error: "Invalid email or password" });
+    return res.status(400).send({ error: "Invalid password" });
   }
 
   // Generate a JWT token
@@ -76,20 +92,5 @@ router.post("/login", async (req, res) => {
   res.send({ message: "Logged in successfully", token , user_id: user._id});
 });
 
-// Middleware for protected routes
-const authenticate = (req, res, next) => {
-  const token = req.header("x-auth-token");
-  if (!token) {
-    return res.status(401).send({ error: "Access denied. No token provided." });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret");
-    req.user = decoded;
-    next();
-  } catch (error) {
-    res.status(400).send({ error: "Invalid token" });
-  }
-};
 
 module.exports = { router, authenticate };

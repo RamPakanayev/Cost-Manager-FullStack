@@ -5,6 +5,8 @@ import './LoginPage.css';
 function LoginPage({ setIsLoggedIn, setUserId }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
@@ -30,9 +32,18 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
         localStorage.setItem('token', userData.token);
         // Navigate to the homepage
         navigate('/homepage');
-      } else {
+      }  else {
         const errorResponse = await response.json();
         setErrorMessage(errorResponse.error);
+        if (errorResponse.error === 'Invalid email') {
+          setEmailError(true);
+          setTimeout(() => setEmailError(false), 600);
+          // change the timeout value to change the duration of the effect
+        } else if (errorResponse.error === 'Invalid password') {
+          setPasswordError(true);
+          setTimeout(() => setPasswordError(false), 600);
+          // change the timeout value to change the duration of the effect
+        }
       }
     } catch (error) {
       setErrorMessage('Network error. Please try again later.');
@@ -52,6 +63,7 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           required
+          className={emailError ? 'error' : ''}
         />
       </label>
       <br />
@@ -63,8 +75,10 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           required
+          className={passwordError ? 'error' : ''}
         />
       </label>
+
       <br />
 
       <button className='login' type="submit">Login</button>
