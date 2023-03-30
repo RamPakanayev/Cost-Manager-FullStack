@@ -11,8 +11,12 @@
   top: 0;
   width: 100%;
   z-index: 1;
+  transition: height 0.3s ease-in-out;
 }
-
+.header-scrolling {
+  height: 20px;
+  transition: height 0.3s ease-in-out;
+}
 
 body {
   padding-top: 150px;
@@ -42,6 +46,12 @@ body {
   width: auto;
   margin-right: 1rem;
   margin-top: 13px;
+  transition: height 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+}
+.logo-scrolling {
+  height: 40px;
+  margin-top: 12px;
+  transition: height 0.3s ease-in-out, margin-top 0.3s ease-in-out;
 }
 
 .nav-links {

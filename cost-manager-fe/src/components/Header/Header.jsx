@@ -2,10 +2,32 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 
 function Header({ handleLogout }) {
+  const [scrolling, setScrolling] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 10) {
+      setScrolling(true);
+    } else {
+      setScrolling(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="header">
+    <header className={`header ${scrolling ? "header-scrolling" : ""}`}>
       <div className="logo-container">
-        <img src="../../../Logo.png" alt="Logo" className="logo" href="/" />
+        <img
+          src="../../../Logo.png"
+          alt="Logo"
+          className={`logo ${scrolling ? "logo-scrolling" : ""}`}
+          href="/"
+        />
       </div>
       <nav className="nav-links">
         <a href="/homepage" className="nav-link">
