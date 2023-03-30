@@ -95,4 +95,12 @@ router.post("/login", async (req, res) => {
   res.send({ message: "Logged in successfully", token, user_id: user._id });
 });
 
+router.get("/profile", authenticate, async (req, res) => {
+  const user = await userDoc.findById(req.user._id).select("-password");
+  if (!user) {
+    return res.status(404).send({ error: "User not found" });
+  }
+  res.send(user);
+});
+
 module.exports = { router, authenticate };

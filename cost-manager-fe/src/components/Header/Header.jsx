@@ -33,7 +33,7 @@ function Header({ handleLogout,isLoggedIn  }) {
         <a href="/homepage" className="nav-link">
           Home
         </a>
-        <a href="/user-info" className="nav-link">
+        <a href="/profile" className="nav-link">
           Profile
         </a>
         <a href="/settings" className="nav-link">
