@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Profile.css";
 
 function Profile({ token }) {
   const [userData, setUserData] = useState({});
@@ -31,8 +32,9 @@ function Profile({ token }) {
   }, [token]);
 
   return (
-    <div>
+    <div className="profile">
       <h2>User Profile</h2>
+      <hr />
       <p>Email: {userData.email}</p>
       <p>First Name: {userData.first_name}</p>
       <p>Last Name: {userData.last_name}</p>
