@@ -15,12 +15,12 @@
 
 
 body {
-  padding-top: 120px;
+  padding-top: 150px;
 }
 
 @media (max-width: 800px) {
   body {
-    padding-top: 40px;
+    padding-top: 90px;
   }
 }
 
@@ -47,6 +47,7 @@ body {
 .nav-links {
   display: flex;
   align-items: center;
+  margin-right: 50px; /* Add this line to give a right margin */
 }
 
 .nav-link {
@@ -77,11 +78,4 @@ body {
   transform: scaleY(1);
 }
 
-button {
-  background-color: #00ff48;
-  color: #24292e;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
+
