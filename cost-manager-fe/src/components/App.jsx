@@ -8,12 +8,13 @@ import HomePage from "./HomePage";
 import Header from "./Header/Header";
 import jwt_decode from 'jwt-decode';
 import Footer from "./Footer/Footer";
+import Profile from "./Profile/Profile";
 
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
-
+  
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -38,9 +39,9 @@ function App() {
 
 
   return (
-    <>
-    <Header handleLogout={handleLogout} isLoggedIn={isLoggedIn} />
     <Router>
+    <Header handleLogout={handleLogout} isLoggedIn={isLoggedIn} />
+    
       <div className="App">
         
         <Routes>
@@ -86,11 +87,15 @@ function App() {
             }
           />
           <Route path="/" element={<LoginPage setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />} />
+        
+          <Route path="/profile" element={<Profile token={localStorage.getItem('token')} />} />
+
+
+        
         </Routes>
       </div>
+      <Footer />
     </Router>
-    <Footer />
-    </>
   );
 }
 

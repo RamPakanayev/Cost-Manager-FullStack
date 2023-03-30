@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+
 import "./Header.css";
 
 function Header({ handleLogout,isLoggedIn  }) {
@@ -30,21 +32,22 @@ function Header({ handleLogout,isLoggedIn  }) {
         />
       </div>
       <nav className="nav-links">
-        <a href="/homepage" className="nav-link">
-          Home
-        </a>
-        <a href="/profile" className="nav-link">
-          Profile
-        </a>
-        <a href="/settings" className="nav-link">
-          Settings
-        </a>
-        <a href="/homepage" className="nav-link">
-          Search
-        </a>
-        <a href="/settings" className="nav-link">
-          About
-        </a>
+      <Link to="/homepage" className="nav-link">
+  Home
+</Link>
+<Link to="/profile" className="nav-link">
+  Profile
+</Link>
+<Link to="/settings" className="nav-link">
+  Settings
+</Link>
+<Link to="/search" className="nav-link">
+  Search
+</Link>
+<Link to="/about" className="nav-link">
+  About
+</Link>
+
         {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
       </nav>
     </header>
