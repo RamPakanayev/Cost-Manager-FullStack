@@ -14,7 +14,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
 
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -37,10 +36,10 @@ function App() {
 
 
 
-  
+
   return (
     <>
-    <Header handleLogout={handleLogout} />
+    <Header handleLogout={handleLogout} isLoggedIn={isLoggedIn} />
     <Router>
       <div className="App">
         

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
 
-function Header({ handleLogout }) {
+function Header({ handleLogout,isLoggedIn  }) {
   const [scrolling, setScrolling] = useState(false);
 
   const handleScroll = () => {
@@ -45,7 +45,7 @@ function Header({ handleLogout }) {
         <a href="/settings" className="nav-link">
           About
         </a>
-        <button onClick={handleLogout}>Logout</button>
+        {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
       </nav>
     </header>
   );
