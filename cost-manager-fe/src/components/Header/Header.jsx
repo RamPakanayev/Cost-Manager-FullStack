@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 
-function Header({ handleLogout,isLoggedIn  }) {
+function Header({ handleLogout, isLoggedIn }) {
   const [scrolling, setScrolling] = useState(false);
+  const navigate = useNavigate(); 
 
   const handleScroll = () => {
     if (window.scrollY > 10) {
@@ -13,6 +13,12 @@ function Header({ handleLogout,isLoggedIn  }) {
       setScrolling(false);
     }
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -32,21 +38,23 @@ function Header({ handleLogout,isLoggedIn  }) {
         />
       </div>
       <nav className="nav-links">
-      <Link to="/homepage" className="nav-link">
-  Home
-</Link>
-<Link to="/profile" className="nav-link">
-  Profile
-</Link>
-<Link to="/settings" className="nav-link">
-  Settings
-</Link>
-<Link to="/search" className="nav-link">
-  Search
-</Link>
-<Link to="/about" className="nav-link">
-  About
-</Link>
+        <Link to="/homepage" className="nav-link">
+          Home
+        </Link>
+        {isLoggedIn && (
+          <Link to="/profile" className="nav-link">
+            Profile
+          </Link>
+        )}
+        <Link to="/settings" className="nav-link">
+          Settings
+        </Link>
+        <Link to="/search" className="nav-link">
+          Search
+        </Link>
+        <Link to="/about" className="nav-link">
+          About
+        </Link>
 
         {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
       </nav>
