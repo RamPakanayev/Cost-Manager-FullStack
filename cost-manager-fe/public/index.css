@@ -124,23 +124,9 @@ hr {
   text-align: center;
 }
 
-.total-sum {
-  font-weight: bold;
-  font-size: 2em;
-  margin: 10.6px 10.6px;
-  text-align: center;
-  background-color: #28a745;
-}
 
-.no-data-found {
-  font-size: 1.5em;
-  margin-top: 24px;
-  margin-bottom: 24px;
-  width: 72%;
-  background-color: #24292e;
-  color: #f6f8fa;
-  text-align: center;
-}
+
+
 input[type="date"] {
   width: 100%;
   font-size: 1em;

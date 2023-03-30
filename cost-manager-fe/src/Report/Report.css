@@ -17,3 +17,27 @@
 .delete-btn:active {
   background-color: #bd2130;
 } */
+.total-sum {
+  font-weight: bold;
+  font-size: 2em;
+  margin: 10.6px 10.6px;
+  text-align: center;
+  background-color: #06ea3b;
+  width: 91%;
+  color: #24292e;
+  padding: 7.6px 10.6px;
+
+  border-radius: 5px;
+  cursor: pointer;
+}
+.no-data-found {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  margin-left: 14%;
+  width: 72%;
+  background-color: #24292e;
+  color: #fd0101;
+  text-align: center;
+}

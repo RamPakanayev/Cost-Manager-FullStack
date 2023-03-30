@@ -51,10 +51,6 @@ function AddCostForm({ userId }) {
   function handleAddCostItem(e) {
     e.preventDefault();
 
-    // if (!validateInputs()) {
-    //   return;
-    // }
-    // Reset the error message
     setErrorMessage("");
 
     const updatedCategory = category === "" ? "Other" : category;

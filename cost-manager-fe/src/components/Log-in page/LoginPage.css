@@ -34,7 +34,6 @@ button:hover {
 }
 .error-message {
   color: red;
-  margin-top: 1rem;
 }
 input.error {
   border-color: red;
