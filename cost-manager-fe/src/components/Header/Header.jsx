@@ -46,9 +46,11 @@ function Header({ handleLogout, isLoggedIn }) {
             Profile
           </Link>
         )}
-        <Link to="/settings" className="nav-link">
-          Settings
-        </Link>
+         {isLoggedIn && (
+          <Link to="/settings" className="nav-link">
+            Settings
+          </Link>
+        )}
         <Link to="/search" className="nav-link">
           Search
         </Link>

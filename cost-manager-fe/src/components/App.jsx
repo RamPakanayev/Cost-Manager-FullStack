@@ -9,6 +9,7 @@ import Header from "./Header/Header";
 import jwt_decode from 'jwt-decode';
 import Footer from "./Footer/Footer";
 import Profile from "./Profile/Profile";
+import UserSettings from "./UserSettings/UserSettings";
 
 
 function App() {
@@ -90,7 +91,16 @@ function App() {
         
           <Route path="/profile" element={<Profile token={localStorage.getItem('token')} />} />
 
-
+          <Route
+            path="/settings"
+            element={
+              isLoggedIn ? (
+                <UserSettings userId={userId} handleLogout={handleLogout} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
         
         </Routes>
       </div>

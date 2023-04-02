@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { userDoc } = require("../db/db");
+const { userDoc, costDoc } = require("../db/db");
 
 // Middleware for protected routes
 const authenticate = (req, res, next) => {
@@ -101,6 +101,31 @@ router.get("/profile", authenticate, async (req, res) => {
     return res.status(404).send({ error: "User not found" });
   }
   res.send(user);
+});
+
+// Route to delete user and their associated cost data
+router.delete("/deleteAccount/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    console.log(`Deleting account for user ID: ${userId}`);
+
+    // Delete user's cost data
+    console.log("Deleting cost data...");
+    await costDoc.deleteMany({ user_id: userId });
+    console.log("Cost data deleted.");
+
+    // Delete user account
+    console.log("Deleting user account...");
+    await userDoc.findByIdAndDelete(userId);
+    console.log("User account deleted.");
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .send({ error: "Error deleting user account and associated cost data" });
+  }
 });
 
 module.exports = { router, authenticate };
