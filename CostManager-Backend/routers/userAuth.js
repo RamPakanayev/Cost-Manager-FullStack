@@ -103,4 +103,23 @@ router.get("/profile", authenticate, async (req, res) => {
   res.send(user);
 });
 
+// Route to delete user and their associated cost data
+router.delete('/deleteAccount/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Delete user's cost data
+    await costDoc.deleteMany({ user_id: userId });
+
+    // Delete user account
+    await userDoc.findByIdAndDelete(userId);
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Error deleting user account and associated cost data' });
+  }
+});
+
+
 module.exports = { router, authenticate };
