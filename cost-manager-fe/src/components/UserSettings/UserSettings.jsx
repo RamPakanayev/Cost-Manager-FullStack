@@ -1,8 +1,16 @@
-//UserSettings.js
-import React from 'react';
+import React, { useState } from 'react';
+import './UserSettings.css';
 
 function UserSettings({ userId, handleLogout }) {
-  const handleDeleteAccount = () => {
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+
+  const handleDeleteAccount = (e) => {
+    e.preventDefault();
+    if (!deleteConfirmation) {
+      setDeleteConfirmation(true);
+      return;
+    }
+
     fetch(`/auth/deleteAccount/${userId}`, {
       method: 'DELETE',
     })
@@ -10,7 +18,7 @@ function UserSettings({ userId, handleLogout }) {
         if (res.ok) {
           handleLogout();
         } else {
-          console.error('Error deleting account:', res); // Log the response here
+          console.error('Error deleting account:', res);
           throw new Error('Failed to delete account');
         }
       })
@@ -18,14 +26,26 @@ function UserSettings({ userId, handleLogout }) {
         console.error(err);
       });
   };
-  
+
+  const resetDeleteConfirmation = () => {
+    setDeleteConfirmation(false);
+  };
 
   return (
-    <div>
+    <form>
       <h1>Settings</h1>
-      <p>Basic settings for your account</p>
-      <button onClick={handleDeleteAccount}>Delete Account</button>
-    </div>
+      {deleteConfirmation && (
+        <div>
+          <p className="warning-text">
+            Are you sure you want to delete your account? This action cannot be undone.
+          </p>
+          <button onClick={resetDeleteConfirmation}>Cancel</button>
+        </div>
+      )}
+      <button className="delete-btn" onClick={handleDeleteAccount}>
+        {deleteConfirmation ? 'Verify Delete' : 'Delete Account'}
+      </button>
+    </form>
   );
 }
 
