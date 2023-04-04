@@ -3,14 +3,34 @@ import React, { useState } from "react";
 function DeleteAccountForm({ userId }) {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleDeleteAccount = (e) => {
+  const handleDeleteAccount = async (e) => {
     e.preventDefault();
-    // Your delete account logic here
-    setSuccessMessage("Account deleted successfully!");
-    setTimeout(() => {
-      setSuccessMessage("");
-    }, 2000);
+
+    try {
+      const response = await fetch(`/auth/deleteAccount/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (response.ok) {
+        setSuccessMessage("Account deleted successfully!");
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 2000);
+      } else {
+        const error = await response.json();
+        setErrorMessage(error.error);
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Failed to delete account");
+    }
   };
 
   return (
@@ -27,6 +47,9 @@ function DeleteAccountForm({ userId }) {
         />
       </label>
       <br />
+      {errorMessage && (
+        <div className="error-message">{errorMessage}</div>
+      )}
       {successMessage && (
         <div className="success-message">{successMessage}</div>
       )}

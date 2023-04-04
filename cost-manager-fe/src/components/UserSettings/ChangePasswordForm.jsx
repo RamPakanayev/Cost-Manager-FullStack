@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import "./ChangePassword.css";
 
-function ChangePassword({ userId,handleLogout  }) {
+function ChangePassword({ userId, handleLogout }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -71,7 +71,6 @@ function ChangePassword({ userId,handleLogout  }) {
 
     return isValid;
   }
-
   function handleChangePassword(e) {
     e.preventDefault();
     setErrorMessage("");
@@ -96,25 +95,21 @@ function ChangePassword({ userId,handleLogout  }) {
       },
       body: JSON.stringify(passwordData),
     })
-    .then((res) => {
-      if (res.ok) {
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmNewPassword("");
-        setSuccessMessage("Password changed successfully!");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 2000);
-        handleLogout(); // Add this line to log the user out
-      } else {
-        return res.json().then((data) => {
-          throw new Error(data.error);
-        });
-      }
-    })
+      .then((res) => {
+        if (res.ok) {
+          setCurrentPassword("");
+          setNewPassword("");
+          setConfirmNewPassword("");
+          handleLogout();
+        } else {
+          return res.json().then((data) => {
+            setErrorMessage(data.error);
+          });
+        }
+      })
       .catch((err) => {
         console.error(err);
-        setErrorMessage(err.message);
+        setErrorMessage("Error changing password");
       });
   }
   
@@ -161,10 +156,13 @@ function ChangePassword({ userId,handleLogout  }) {
         />
       </label>
 
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      {successMessage && (
-        <div className="success-message">{successMessage}</div>
-      )}
+      {errorMessage ? (
+  <div className="error-message">{errorMessage}</div>
+) : successMessage ? (
+  <div className="success-message">{successMessage}</div>
+) : null}
+
+
 
       <button type="submit">Change Password</button>
     </form>
