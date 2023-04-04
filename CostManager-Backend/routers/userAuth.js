@@ -128,4 +128,49 @@ router.delete("/deleteAccount/:userId", async (req, res) => {
   }
 });
 
+// Update user info route
+router.put("/updateInfo/:userId", authenticate, async (req, res) => {
+  const { userId } = req.params;
+  const { firstName, lastName } = req.body;
+
+  try {
+    await userDoc.findByIdAndUpdate(userId, {
+      first_name: firstName,
+      last_name: lastName,
+    }); // Update the field names here
+    res.send({ message: "User info updated successfully" });
+  } catch (error) {
+    console.error("Error:", error); // Add this line to log the error to the console
+    res.status(500).send({ error: "Error updating user info" });
+  }
+});
+
+// Change password route
+router.post("/changePassword/:userId", authenticate, async (req, res) => {
+  const userId = req.params.userId;
+  const { old_password, new_password } = req.body;
+
+  // Get user by ID
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).send({ error: "User not found" });
+  }
+
+  // Check if the old password is correct
+  const isMatch = await bcrypt.compare(old_password, user.password);
+  if (!isMatch) {
+    return res.status(400).send({ error: "Incorrect old password" });
+  }
+
+  // Hash the new password and update the user
+  try {
+    const hashedPassword = await bcrypt.hash(new_password, 10);
+    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+    res.send({ message: "Password changed successfully" });
+  } catch (error) {
+    res.status(500).send({ error: "Error changing password" });
+  }
+});
+
+
 module.exports = { router, authenticate };
