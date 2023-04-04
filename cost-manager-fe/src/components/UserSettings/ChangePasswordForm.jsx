@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import "./ChangePassword.css";
 
-function ChangePassword({ userId }) {
+function ChangePassword({ userId,handleLogout  }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -75,44 +75,49 @@ function ChangePassword({ userId }) {
   function handleChangePassword(e) {
     e.preventDefault();
     setErrorMessage("");
-
+  
     if (!validateInputs()) {
       return;
     }
-
+  
     const passwordData = {
       user_id: userId,
       old_password: currentPassword,
       new_password: newPassword,
     };
-
+  
+    const token = localStorage.getItem("token");
+  
     fetch(`/auth/changePassword/${userId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-auth-token": token,
       },
       body: JSON.stringify(passwordData),
     })
-      .then((res) => {
-        if (res.ok) {
-          setCurrentPassword("");
-          setNewPassword("");
-          setConfirmNewPassword("");
-          setSuccessMessage("Password changed successfully!");
-          setTimeout(() => {
-            setSuccessMessage("");
-          }, 2000);
-        } else {
-          return res.json().then((data) => {
-            throw new Error(data.error);
-          });
-        }
-      })
+    .then((res) => {
+      if (res.ok) {
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+        setSuccessMessage("Password changed successfully!");
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 2000);
+        handleLogout(); // Add this line to log the user out
+      } else {
+        return res.json().then((data) => {
+          throw new Error(data.error);
+        });
+      }
+    })
       .catch((err) => {
         console.error(err);
         setErrorMessage(err.message);
       });
   }
+  
 
   return (
     <form className="change-password-form" onSubmit={handleChangePassword}>

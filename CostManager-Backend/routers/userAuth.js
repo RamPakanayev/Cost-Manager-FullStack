@@ -151,23 +151,27 @@ router.post("/changePassword/:userId", authenticate, async (req, res) => {
   const { old_password, new_password } = req.body;
 
   // Get user by ID
-  const user = await User.findById(userId);
+  const user = await userDoc.findById(userId);
   if (!user) {
     return res.status(404).send({ error: "User not found" });
   }
 
-  // Check if the old password is correct
-  const isMatch = await bcrypt.compare(old_password, user.password);
-  if (!isMatch) {
-    return res.status(400).send({ error: "Incorrect old password" });
+  // Compare the old password with the stored hash
+  const validPassword = await bcrypt.compare(old_password, user.password);
+  if (!validPassword) {
+    return res.status(400).send({ error: "Incorrect current password" });
   }
 
-  // Hash the new password and update the user
+  // Hash the new password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(new_password, salt);
+
   try {
-    const hashedPassword = await bcrypt.hash(new_password, 10);
-    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+    // Update the user password
+    await userDoc.findByIdAndUpdate(userId, { password: hashedPassword });
     res.send({ message: "Password changed successfully" });
   } catch (error) {
+    console.error("Error:", error);
     res.status(500).send({ error: "Error changing password" });
   }
 });
