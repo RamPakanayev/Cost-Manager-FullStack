@@ -6,21 +6,32 @@ function UpdateInfoForm({ userId }) {
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [inputKey, setInputKey] = useState(0);
 
-
-
-
-  
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
+    setInputKey((prevKey) => prevKey + 1);
+
+    let hasError = false;
+
     if (!firstName.trim()) {
       setFirstNameError(true);
-      return;
+      hasError = true;
+    } else {
+      setFirstNameError(false);
     }
+
     if (!lastName.trim()) {
       setLastNameError(true);
+      hasError = true;
+    } else {
+      setLastNameError(false);
+    }
+
+    if (hasError) {
       return;
     }
+
     try {
       const response = await fetch(`/auth/updateInfo/${userId}`, {
         method: "PUT",
@@ -42,7 +53,7 @@ function UpdateInfoForm({ userId }) {
       console.error(error);
     }
   };
-  
+
   return (
     <form onSubmit={handleUpdateInfo}>
       <h2>Update User Info</h2>
@@ -50,12 +61,12 @@ function UpdateInfoForm({ userId }) {
       <label>
         First Name:
         <input
+          key={inputKey}
           type="text"
           value={firstName}
           onChange={(e) => {
             setFirstName(e.target.value);
             setFirstNameError(false);
-            
           }}
           placeholder="Enter first name"
           className={firstNameError ? "error" : ""}
@@ -66,6 +77,7 @@ function UpdateInfoForm({ userId }) {
       <label>
         Last Name:
         <input
+          key={inputKey}
           type="text"
           value={lastName}
           onChange={(e) => {
@@ -73,7 +85,6 @@ function UpdateInfoForm({ userId }) {
             setLastNameError(false);
           }}
           placeholder="Enter last name"
-
           className={lastNameError ? "error" : ""}
         />
         {lastNameError && <div className="error-message">Last name is required.</div>}

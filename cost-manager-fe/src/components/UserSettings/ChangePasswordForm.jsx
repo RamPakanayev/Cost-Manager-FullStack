@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import "./ChangePassword.css";
 
 function ChangePassword({ userId, handleLogout }) {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -8,6 +7,7 @@ function ChangePassword({ userId, handleLogout }) {
   const [passwordError, setPasswordError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [inputKey, setInputKey] = useState(0);
 
   useEffect(() => {
     if (errorMessage) {
@@ -127,6 +127,7 @@ function ChangePassword({ userId, handleLogout }) {
       <label>
         Current Password:
         <input
+          key={inputKey}
           type="password"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
@@ -139,6 +140,7 @@ function ChangePassword({ userId, handleLogout }) {
       <label>
         New Password:
         <input
+          key={inputKey}
           type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
@@ -152,6 +154,7 @@ function ChangePassword({ userId, handleLogout }) {
       <label>
         Confirm New Password:
         <input
+          key={inputKey}
           type="password"
           value={confirmNewPassword}
           onChange={(e) => setConfirmNewPassword(e.target.value)}
