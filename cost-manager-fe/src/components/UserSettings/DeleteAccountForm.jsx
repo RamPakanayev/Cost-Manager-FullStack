@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function DeleteAccountForm({ userId ,handleLogout}) {
+
+function DeleteAccountForm({ userId, handleLogout }) {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
   const navigate = useNavigate();
 
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
+
+    if (!showWarning) {
+      setShowWarning(true);
+      return;
+    }
 
     try {
       const response = await fetch(`/auth/deleteAccount/${userId}`, {
@@ -36,6 +43,10 @@ function DeleteAccountForm({ userId ,handleLogout}) {
     }
   };
 
+  const handleCancel = () => {
+    setShowWarning(false);
+  };
+
   return (
     <form onSubmit={handleDeleteAccount}>
       <h2>Delete Account</h2>
@@ -56,7 +67,20 @@ function DeleteAccountForm({ userId ,handleLogout}) {
       {successMessage && (
         <div className="success-message">{successMessage}</div>
       )}
-      <button type="submit">Delete Account</button>
+      {showWarning && (
+        <p className="warning-message" style={{ color: "red" }}>
+          Warning: Your account and all associated data will be permanently
+          deleted. This action cannot be undone.
+        </p>
+      )}
+      <button type="submit" className="delete-btn">
+        {showWarning ? "Verify Delete Account" : "Delete Account"}
+      </button>
+      {showWarning && (
+        <button type="button" onClick={handleCancel}>
+          Cancel
+        </button>
+      )}
     </form>
   );
 }

@@ -2,6 +2,7 @@ import React from "react";
 import ChangePassword from "./ChangePasswordForm";
 import UpdateInfoForm from "./UpdateInfoForm";
 import DeleteAccountForm from "./DeleteAccountForm";
+import './UserSettings.css'
 
 function UserSettings({ userId, handleLogout }) {
   return (
