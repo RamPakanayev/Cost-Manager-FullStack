@@ -8,6 +8,7 @@ function ChangePassword({ userId, handleLogout }) {
   const [passwordError, setPasswordError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [shakeEffect, setShakeEffect] = useState(false);
 
   useEffect(() => {
     if (errorMessage) {
@@ -15,7 +16,7 @@ function ChangePassword({ userId, handleLogout }) {
         setErrorMessage("");
       }, 5000);
     }
-  }, [errorMessage]);
+  }, [shakeEffect]);
 
   function validatePassword(password) {
     if (password.length < 8) {
@@ -62,31 +63,32 @@ function ChangePassword({ userId, handleLogout }) {
       setPasswordError(false);
     }
 
-    if (isValid) {
-      setSuccessMessage("Password changed successfully!");
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 2000);
-    }
+    // if (isValid) {
+    //   // setSuccessMessage("Password changed successfully!");
+    //   setTimeout(() => {
+    //     setSuccessMessage("");
+    //   }, 2000);
+    // }
 
     return isValid;
   }
   function handleChangePassword(e) {
     e.preventDefault();
     setErrorMessage("");
-  
+
     if (!validateInputs()) {
+      setShakeEffect(true);
       return;
     }
-  
+
     const passwordData = {
       user_id: userId,
       old_password: currentPassword,
       new_password: newPassword,
     };
-  
+
     const token = localStorage.getItem("token");
-  
+
     fetch(`/auth/changePassword/${userId}`, {
       method: "POST",
       headers: {
@@ -100,7 +102,13 @@ function ChangePassword({ userId, handleLogout }) {
           setCurrentPassword("");
           setNewPassword("");
           setConfirmNewPassword("");
-          handleLogout();
+          setSuccessMessage("Password changed successfully!");
+          setTimeout(() => {
+            setSuccessMessage("");
+          }, 2000);
+          setTimeout(() => {
+            handleLogout();
+          }, 2000);
         } else {
           return res.json().then((data) => {
             setErrorMessage(data.error);
@@ -112,7 +120,6 @@ function ChangePassword({ userId, handleLogout }) {
         setErrorMessage("Error changing password");
       });
   }
-  
 
   return (
     <form className="change-password-form" onSubmit={handleChangePassword}>
@@ -139,7 +146,7 @@ function ChangePassword({ userId, handleLogout }) {
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="Enter new password"
           required
-          className={passwordError ? "error" : ""}
+          className={passwordError || shakeEffect ? "error" : ""}
         />
       </label>
       <br />
@@ -152,17 +159,15 @@ function ChangePassword({ userId, handleLogout }) {
           onChange={(e) => setConfirmNewPassword(e.target.value)}
           placeholder="Confirm new password"
           required
-          className={passwordError ? "error" : ""}
+          className={passwordError || shakeEffect ? "error" : ""}
         />
       </label>
 
       {errorMessage ? (
-  <div className="error-message">{errorMessage}</div>
-) : successMessage ? (
-  <div className="success-message">{successMessage}</div>
-) : null}
-
-
+        <div className="error-message">{errorMessage}</div>
+      ) : successMessage && !errorMessage ? (
+        <div className="success-message">{successMessage}</div>
+      ) : null}
 
       <button type="submit">Change Password</button>
     </form>
