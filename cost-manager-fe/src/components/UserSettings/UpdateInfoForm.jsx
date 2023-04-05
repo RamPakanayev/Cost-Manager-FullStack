@@ -32,9 +32,12 @@ function UpdateInfoForm({ userId }) {
       });
       const data = await response.json();
       setSuccessMessage(data.message);
+      setFirstName("");
+      setLastName("");
       setTimeout(() => {
         setSuccessMessage("");
       }, 2000);
+
     } catch (error) {
       console.error(error);
     }

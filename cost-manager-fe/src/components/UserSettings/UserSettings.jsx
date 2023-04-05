@@ -11,7 +11,7 @@ function UserSettings({ userId, handleLogout }) {
         <ChangePassword userId={userId} handleLogout={handleLogout} />
         <UpdateInfoForm userId={userId} />
         <DeleteAccountForm userId={userId} />
-      </div>
+      </div>c
     </div>
   );
 }
