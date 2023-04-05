@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function DeleteAccountForm({ userId }) {
+function DeleteAccountForm({ userId ,handleLogout}) {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ function DeleteAccountForm({ userId }) {
         setSuccessMessage("Account deleted successfully!");
         setTimeout(() => {
           setSuccessMessage("");
+          handleLogout();
         }, 2000);
       } else {
         const error = await response.json();

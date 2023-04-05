@@ -10,8 +10,8 @@ function UserSettings({ userId, handleLogout }) {
       <div className="settings-grid">
         <ChangePassword userId={userId} handleLogout={handleLogout} />
         <UpdateInfoForm userId={userId} />
-        <DeleteAccountForm userId={userId} />
-      </div>c
+        <DeleteAccountForm userId={userId} handleLogout={handleLogout} />
+      </div>
     </div>
   );
 }
