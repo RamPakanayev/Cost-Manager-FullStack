@@ -102,12 +102,24 @@ router.get("/profile", authenticate, async (req, res) => {
   }
   res.send(user);
 });
-
 // Route to delete user and their associated cost data
-router.delete("/deleteAccount/:userId", async (req, res) => {
+router.delete("/deleteAccount/:userId", authenticate, async (req, res) => {
   try {
     const { userId } = req.params;
+    const { password } = req.body;
     console.log(`Deleting account for user ID: ${userId}`);
+
+    // Find the user in the database
+    const user = await userDoc.findById(userId);
+    if (!user) {
+      return res.status(400).send({ error: "User not found" });
+    }
+
+    // Compare the password with the stored hash
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).send({ error: "Invalid password" });
+    }
 
     // Delete user's cost data
     console.log("Deleting cost data...");
@@ -127,6 +139,7 @@ router.delete("/deleteAccount/:userId", async (req, res) => {
       .send({ error: "Error deleting user account and associated cost data" });
   }
 });
+
 
 // Update user info route
 router.put("/updateInfo/:userId", authenticate, async (req, res) => {

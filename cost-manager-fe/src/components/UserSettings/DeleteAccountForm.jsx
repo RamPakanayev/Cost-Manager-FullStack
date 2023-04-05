@@ -61,13 +61,13 @@ function DeleteAccountForm({ userId, handleLogout }) {
         />
       </label>
       <br />
-      {errorMessage && (
+      {!successMessage && errorMessage && (
         <div className="error-message">{errorMessage}</div>
       )}
       {successMessage && (
         <div className="success-message">{successMessage}</div>
       )}
-      {showWarning && (
+      {!successMessage && showWarning && (
         <p className="warning-message" style={{ color: "red" }}>
           Warning: Your account and all associated data will be permanently
           deleted. This action cannot be undone.
@@ -83,6 +83,8 @@ function DeleteAccountForm({ userId, handleLogout }) {
       )}
     </form>
   );
+  
+  
 }
 
 export default DeleteAccountForm;
