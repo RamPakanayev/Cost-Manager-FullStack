@@ -7,7 +7,8 @@ import './UserSettings.css'
 function UserSettings({ userId, handleLogout }) {
   return (
     <div className="user-settings">
-      <h1>User Settings</h1>
+      <h1 className="title">User Settings</h1>
+      
       <div className="settings-grid">
         <ChangePassword userId={userId} handleLogout={handleLogout} />
         <UpdateInfoForm userId={userId} />
