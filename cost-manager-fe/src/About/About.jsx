@@ -32,6 +32,8 @@ function About() {
           <li key={developer.id}>
             <p>Name: {developer.firstName} {developer.lastName}</p>
             <p>GitHub: {developer.gitHubUrl}</p>
+            <p>Project GitHub Url: {developer.projectUrl}</p>
+            <p>Linkedin: {developer.LinkedinUrl}</p>
             <p>Email: {developer.email}</p>
           </li>
         ))}
