@@ -10,6 +10,7 @@ import jwt_decode from 'jwt-decode';
 import Footer from "./Footer/Footer";
 import Profile from "./Profile/Profile";
 import UserSettings from "./UserSettings/UserSettings";
+import About from "../About/About";
 
 
 function App() {
@@ -90,6 +91,8 @@ function App() {
           <Route path="/" element={<LoginPage setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />} />
         
           <Route path="/profile" element={<Profile token={localStorage.getItem('token')} />} />
+
+          <Route path="/about" element={<About />} />
 
           <Route
             path="/settings"
