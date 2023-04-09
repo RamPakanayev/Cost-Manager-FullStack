@@ -10,15 +10,11 @@ router.get("/", (req, res) => {
     {
       firstName: "Ram",
       lastName: "Pakanayev",
-      id: "313561433",
+      projectUrl: "https://github.com/RamPakanayev/Cost-Manager-FullStack",
+      gitHubUrl:"https://github.com/RamPakanayev",
+      LinkedinUrl:"https://www.linkedin.com/in/ram-pakanayev/",
       email: "rampakanayev@gmail.com",
-    },
-    {
-      firstName: "Shachar",
-      lastName: "Baba",
-      id: "208613083",
-      email: "shaharbaba12@gmail.com",
-    },
+    }
   ];
   // The response will be a JSON object containing the developers array.
   res.json(developers);
