@@ -31,10 +31,30 @@ function About() {
         {developers.map((developer) => (
           <li key={developer.id}>
             <p>Name: {developer.firstName} {developer.lastName}</p>
-            <p>GitHub: {developer.gitHubUrl}</p>
-            <p>Project GitHub Url: {developer.projectUrl}</p>
-            <p>Linkedin: {developer.LinkedinUrl}</p>
-            <p>Email: {developer.email}</p>
+            <p>
+              GitHub:{" "}
+              <a href={developer.gitHubUrl} target="_blank" rel="noopener noreferrer">
+                {developer.gitHubUrl}
+              </a>
+            </p>
+            <p>
+              Project GitHub Url:{" "}
+              <a href={developer.projectUrl} target="_blank" rel="noopener noreferrer">
+                {developer.projectUrl}
+              </a>
+            </p>
+            <p>
+              Linkedin:{" "}
+              <a href={developer.LinkedinUrl} target="_blank" rel="noopener noreferrer">
+                {developer.LinkedinUrl}
+              </a>
+            </p>
+            <p>
+              Email:{" "}
+              <a href={`mailto:${developer.email}`} target="_blank" rel="noopener noreferrer">
+                {developer.email}
+              </a>
+            </p>
           </li>
         ))}
       </ul>
