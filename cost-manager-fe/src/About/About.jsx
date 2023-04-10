@@ -28,7 +28,7 @@ function About() {
   }, []);
 
   return (
-    <div className="about">
+    <form className="about">
       <h2>About:</h2>
       <hr />
 
@@ -43,34 +43,58 @@ function About() {
           </tr>
         </thead>
         <tbody>
-          {developers.map((developer) => (
-            <tr key={developer.id}>
-              <td>
-              
-              <a href={developer.gitHubUrl} target="_blank" rel="noopener noreferrer">
-              <img src={ramLogo} alt="RamLogo" width={width} height={height} /></a>
-              </td>
-        
-              <td>
-                <a href={developer.projectUrl} target="_blank" rel="noopener noreferrer">
-                  <img src={gitHubLogo} alt="Project GitHub Url" width={width} height={height} />
-                </a>
-              </td>
-              <td>
-                <a  href={developer.LinkedinUrl} target="_blank" rel="noopener noreferrer">
-                  <img className="linkedin" src={linkedInLogo} alt="LinkedIn" width={width} height={height} />
-                </a>
-              </td>
-              <td>
-                <a href={`mailto:${developer.email}`} target="_blank" rel="noopener noreferrer">
-                  <img src={emailLogo} alt="Email" width={width} height={height} />
-                </a>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+      {developers.map((developer) => (
+        <tr key={developer.id}>
+          <td>
+            <a href={developer.gitHubUrl} target="_blank" rel="noopener noreferrer">
+              <img
+                src={ramLogo}
+                alt="RamLogo"
+                className="responsive-image"
+                width={width}
+                height={height}
+              />
+            </a>
+          </td>
+
+          <td>
+            <a href={developer.projectUrl} target="_blank" rel="noopener noreferrer">
+              <img
+                src={gitHubLogo}
+                alt="Project GitHub Url"
+                className="responsive-image"
+                width={width}
+                height={height}
+              />
+            </a>
+          </td>
+          <td>
+            <a href={developer.LinkedinUrl} target="_blank" rel="noopener noreferrer">
+              <img
+                className="linkedin responsive-image"
+                src={linkedInLogo}
+                alt="LinkedIn"
+                width={width}
+                height={height}
+              />
+            </a>
+          </td>
+          <td>
+            <a href={`mailto:${developer.email}`} target="_blank" rel="noopener noreferrer">
+              <img
+                src={emailLogo}
+                alt="Email"
+                className="responsive-image"
+                width={width}
+                height={height}
+              />
+            </a>
+          </td>
+        </tr>
+      ))}
+    </tbody>
       </table>
-    </div>
+    </form>
   );
 }
 

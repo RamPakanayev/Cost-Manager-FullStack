@@ -2,5 +2,24 @@
 img{
   width: 70px;
   height: 60px;
-  margin: 25px;
+  /* margin: 35px; */
+}
+.about {
+  max-width: 70%;
+}
+
+.responsive-image {
+  max-width: 100%;
+  height: auto;
+}
+.developer-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.developer-table th,
+.developer-table td {
+  /* border: 1px solid #ccc; */
+  text-align: center;
+  padding: 8px;
 }
