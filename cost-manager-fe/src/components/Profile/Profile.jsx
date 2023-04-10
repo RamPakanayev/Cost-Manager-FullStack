@@ -32,14 +32,14 @@ function Profile({ token }) {
   }, [token]);
 
   return (
-    <div className="profile">
+    <form className="profile">
       <h2>User Profile</h2>
       <hr />
       <p>Email: {userData.email}</p>
       <p>First Name: {userData.first_name}</p>
       <p>Last Name: {userData.last_name}</p>
       <p>Birthday: {userData.birthday}</p>
-    </div>
+    </form>
   );
 }
 
