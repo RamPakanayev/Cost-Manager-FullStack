@@ -222,7 +222,7 @@ router.post("/forgotPassword", async (req, res) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Your new password",
-      text: `Hello, we've reset your password. Your new password is: ${newPassword}`,
+      text: `Hello,\n We've reset your password.\n Your new password is: ${newPassword} \n It is recommended to change the password under the settings on the website`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
