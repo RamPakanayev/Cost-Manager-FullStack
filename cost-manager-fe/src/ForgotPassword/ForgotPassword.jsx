@@ -60,7 +60,7 @@ function ForgotPassword() {
       {emailSent && <p className="success-message">Email sent successfully. You will be redirected shortly.</p>}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <p>
-        <Link to="/login" className="back-to-login">
+        <Link to="/login" className="back-to-login linked-things">
           Back to Login
         </Link>
       </p>

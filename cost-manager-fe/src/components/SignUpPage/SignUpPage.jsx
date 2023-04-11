@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignupPage() {
   const [email, setEmail] = useState("");
@@ -170,6 +170,12 @@ function SignupPage() {
       <br />
       {serverResponse && <p className="error-message">{serverResponse}</p>}
       <button type="submit">Signup</button>
+      <br/>
+      <p>
+        <Link to="/login" className="back-to-login linked-things">
+          Back to Login
+        </Link>
+      </p>
     </form>
   );
 }

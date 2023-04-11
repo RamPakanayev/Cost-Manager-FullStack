@@ -58,7 +58,7 @@ function Header({ handleLogout, isLoggedIn }) {
           About
         </Link>
 
-        {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
+        {isLoggedIn && <button className="logout" onClick={handleLogout}>Logout</button>}
       </nav>
     </header>
   );
