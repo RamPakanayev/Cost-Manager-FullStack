@@ -10,19 +10,22 @@ function ForgotPassword() {
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-
+  
+    // Reset the errorMessage state
+    setErrorMessage("");
+  
     try {
       const response = await fetch("/auth/forgotPassword", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.toLowerCase() }),
       });
-
+  
       if (response.ok) {
         setEmailSent(true);
         setTimeout(() => {
           navigate("/login");
-        }, 2000);
+        }, 4000);
       } else {
         const errorResponse = await response.json();
         if (errorResponse.error === "User not found") {
@@ -35,6 +38,7 @@ function ForgotPassword() {
       setErrorMessage("Network error. Please try again later.");
     }
   };
+  
 
   return (
     <form onSubmit={handleForgotPassword}>
