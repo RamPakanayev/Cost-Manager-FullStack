@@ -1,4 +1,3 @@
-// ForgotPassword.js
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -6,30 +5,27 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [captcha, setCaptcha] = useState(null);
+  const [emailSent, setEmailSent] = useState(false);
   const navigate = useNavigate();
-
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
 
-    if (!captcha) {
-      setErrorMessage("Please complete the captcha");
-      return;
-    }
-
     try {
-      const response = await fetch("/auth/forgot-password", {
+      const response = await fetch("/auth/forgotPassword", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.toLowerCase() }),
       });
 
       if (response.ok) {
-        navigate("/password-reset");
+        setEmailSent(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
         const errorResponse = await response.json();
-        if (errorResponse.error === "Invalid email") {
+        if (errorResponse.error === "User not found") {
           setEmailError(true);
           setTimeout(() => setEmailError(false), 600);
         }
@@ -55,9 +51,9 @@ function ForgotPassword() {
           className={emailError ? "error" : ""}
         />
       </label>
-  
-    
+
       <button type="submit">Send Reset Link</button>
+      {emailSent && <p className="success-message">Email sent successfully. You will be redirected shortly.</p>}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <p>
         <Link to="/login" className="back-to-login">
