@@ -88,6 +88,11 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
       <Link to="/signup" className="signup">
         Sign up
       </Link>
+      <p>
+        <Link to="/forgot-password" className="forgot-password">
+          Forgot password?
+        </Link>
+      </p>
     </form>
   );
 }
