@@ -11,7 +11,7 @@ import Footer from "./Footer/Footer";
 import Profile from "./Profile/Profile";
 import UserSettings from "./UserSettings/UserSettings";
 import About from "../About/About";
-
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -93,7 +93,7 @@ function App() {
           <Route path="/profile" element={<Profile token={localStorage.getItem('token')} />} />
 
           <Route path="/about" element={<About />} />
-
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
             path="/settings"
             element={

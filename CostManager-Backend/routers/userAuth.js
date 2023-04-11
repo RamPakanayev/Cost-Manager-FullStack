@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { userDoc, costDoc } = require("../db/db");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 
 // Middleware for protected routes
 const authenticate = (req, res, next) => {
@@ -140,7 +142,6 @@ router.delete("/deleteAccount/:userId", authenticate, async (req, res) => {
   }
 });
 
-
 // Update user info route
 router.put("/updateInfo/:userId", authenticate, async (req, res) => {
   const { userId } = req.params;
@@ -189,5 +190,53 @@ router.post("/changePassword/:userId", authenticate, async (req, res) => {
   }
 });
 
+//forgetPassword route
+router.post("/forgotPassword", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).send({ error: "Email is required" });
+  }
+
+  const user = await userDoc.findOne({ email });
+  if (!user) {
+    return res.status(400).send({ error: "User not found" });
+  }
+
+  const newPassword = crypto.randomBytes(8).toString("hex");
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+  try {
+    await userDoc.updateOne({ email }, { password: hashedPassword });
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Your new password",
+      text: `Hello, we've reset your password. Your new password is: ${newPassword}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error:", error);
+        res.status(500).send({ error: "Error sending email" });
+      } else {
+        res.send({ message: "Email sent successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ error: "Error updating password" });
+  }
+});
 
 module.exports = { router, authenticate };

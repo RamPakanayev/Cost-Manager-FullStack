@@ -77,17 +77,22 @@ function LoginPage({ setIsLoggedIn, setUserId }) {
           className={passwordError ? "error" : ""}
         />
       </label>
-
-      <br />
-
       <button className="login" type="submit">
         Login
       </button>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+      <p1>
+        <Link to="/forgot-password" className="forgot-password link-spacing">
+          Forgot password?
+        </Link>
+      </p1>
+      
       <p>Dont have a user yet?</p>
-      <Link to="/signup" className="signup">
+      <Link to="/signup" className="signup linked-things ">
         Sign up
       </Link>
+    
     </form>
   );
 }
