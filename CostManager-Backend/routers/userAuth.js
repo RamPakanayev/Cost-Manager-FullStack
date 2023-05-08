@@ -203,7 +203,16 @@ router.post("/forgotPassword", async (req, res) => {
     return res.status(400).send({ error: "User not found" });
   }
 
-  const newPassword = crypto.randomBytes(8).toString("hex");
+  const generatePassword = ((
+    length = 20,
+    wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$'
+  ) =>
+    Array.from(crypto.getRandomValues(new Uint32Array(length)))
+      .map((x) => wishlist[x % wishlist.length])
+      .join(''))
+  
+
+  const newPassword =generatePassword(); //crypto.randomBytes(8).toString("hex");
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(newPassword, salt);
 
